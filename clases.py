@@ -80,17 +80,18 @@ Hora: {self.hora}
       ━━━━━━ PANTALLA ━━━━━━
               ''')
         i = 0
+        # ciclo while para mostrar numero de columnas
         while i < self.sillas_por_fila:
             print(f'{i+1:3d} ', end='')
             i = i+1
         print('')
-        # filas
+        # nro filas
         f = 0
         while f < self.num_filas:
-            print(f'F{f+1:2d} ', end='')
+            print(f'F{f+1:2d} ', end='') #Marcar el inicio de fila#
             i = 0
-            while i < self.sillas_por_fila:
-                if self.sillas[f, i] == True:
+            while i < self.sillas_por_fila: #recorre las sillas de las filas#
+                if self.sillas[f, i] == True: # se decide si esta ocupada o no#
                     print('  X', end='')
                 else:
                     print('  _', end='')
