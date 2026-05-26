@@ -69,12 +69,36 @@ class Funcion:
         self.hora = hora
         self.num_filas = num_filas
         self.sillas_por_fila = sillas_por_fila
-    
-        total_sillas = num_filas * sillas_por_fila
-        self.sillas = np.zeros(total_sillas, dtype=bool)
+        self.sillas = np.zeros((num_filas, sillas_por_fila), dtype=bool)
     
     def mostrar_mapa(self):
-        None
+        print(f'''
+━━━━━━✧ Mapa de Sillas ✧━━━━━━
+Pelicula: {self.pelicula}
+Hora: {self.hora}
+
+      ━━━━━━ PANTALLA ━━━━━━
+              ''')
+        i = 0
+        while i < self.sillas_por_fila:
+            print(f'{i+1:3d} ', end='')
+            i = i+1
+        print('')
+        # filas
+        f = 0
+        while f < self.num_filas:
+            print(f'F{f+1:2d} ', end='')
+            i = 0
+            while i < self.sillas_por_fila:
+                if self.sillas[f, i] == True:
+                    print('  X', end='')
+                else:
+                    print('  _', end='')
+                i += 1
+            print('')
+            f += 1
+        print('X = OCUPADA, _= LIBRE')
+
     def get_pelicula(self):
         None
     def reservar_sillas(self):
