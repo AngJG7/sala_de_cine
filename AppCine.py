@@ -16,15 +16,25 @@ class AppCine:
         self.complejo = Complejo('','')
         self.usuarios = np.empty(MAX_USUARIOS, dtype=object)
         self.peliculas = np.empty(MAX_PELICULAS, dtype=object)
-        self.salas = np.empty(MAX_SALAS, dtype=object)
         self.cant_usuarios = 0
         self.cant_peliculas = 0
-        self.cant_salas = 0
+
+
+        
         #Datos de ejemplo para iniciar
+
         self.usuarios[0] = Usuario("admin1", "1234", "administrador")
+        self.usuarios[1] = Usuario("vende1", "1234", "vendedor")
+        self.usuarios[2] = Usuario("cliente1", "1234", "cliente")
+        self.cant_usuarios = 3
+ 
         self.peliculas[0] = Pelicula("El Padrino", "The Godfather", 1972, 175, "drama", "Estados Unidos", "+18")
-        self.cant_usuarios = 1
-        self.cant_peliculas = 1
+        self.peliculas[1] = Pelicula("Intensamente 2", "Inside Out 2", 2024, 96, "infantil", "Estados Unidos", "Todo público")
+        self.cant_peliculas = 2
+
+        self.complejo.agregar_sala(Sala(1, 15000.0, 5, 8))
+
+
 
     def principal(self):
         
@@ -281,7 +291,56 @@ class AppCine:
                 print("Sala creada exitosamente!")
             else:
                 print("El complejo ya tiene el máximo de salas permitidas (12).")
-            
+    
+    def reservar_boletas(self):             
+        print(f'''
+━━━━━━✧  Reservar boletas ✧━━━━━━''')
+        id_sala_buscar = int(input('Ingresa el identificador de la sala:')) # Buscar por id
+        sala_selecc = self.complejo.buscar_sala(id_sala_buscar)
+        if sala_selecc is None:
+            print(f'No se ha encontrado ninguna sala con el id {id_sala_buscar}')
+            return
+        
+        hora_buscar = input('Hora de la función: ') # Buscar por funcion
+        funcion_selecc = sala_selecc.buscar_funcion(hora_buscar)
+        if funcion_selecc is None:
+            print(f'No se ha encontrado ninguna función a la hora {hora_buscar}')
+            return
+        
+        funcion_selecc.mostrar_mapa()
+
+        cant_boletas = int(input('Ingrese la cantidad de boletas que desea comprar: '))
+        fila = int(input('Escoja la fila: '))
+        silla_inicial = int(input('Escoja la silla inicial: '))
+
+        # validar la cantidad
+        if cant_boletas < 1:
+            print('Error: se debe reservar al menos una boleta!')
+            return
+        # reserva con datos dados 
+        reserva = funcion_selecc.reservar_sillas(fila, silla_inicial, cant_boletas)
+        if reserva == False:
+            print('La reserva no fue posible. Verifique si la fila es invalida, las sillas no caben o están ocupadas')
+            return
+        
+        # si si se reserva, se construye el arreglo
+        sillas_reservadas = np.empty(cant_boletas, dtype=object)
+        i = 0
+        while i < cant_boletas:
+            sillas_reservadas[i] = f'F{fila}-S{silla_inicial+i}'  # dar una mini codigo para identificar facilmente la posicion de cada silla
+            i += 1
+        
+        # calcular precio total
+        precio_total = cant_boletas * sala_selecc.valor_boleta
+        fecha = input('Fecha de la venta (dd/mm/aaaa): ')
+
+        boleta = Boleta(fecha, self.complejo.nombre, sala_selecc.identificador, funcion_selecc.get_pelicula().nombre_espanol, funcion_selecc.get_hora(), precio_total, funcion_selecc.get_pelicula().calificacion, sillas_reservadas)
+        boleta.mostrar_boleta()
+
+
+
+
+        
 
 
 app = AppCine()
