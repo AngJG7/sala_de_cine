@@ -208,19 +208,23 @@ class Sala:
             funcion.mostrar_mapa()
 
     def calcular_recaudo(self):#hace un recorrido por las filas y columnas de las sillas vendidas y calcula el recaudo de estas
-        sillas_vendidas = 0
+      sillas_vendidas = 0
         
         i = 0
-        while i < self.num_filas:
+        while i < self.cantidad_funciones:
+            func_actual = self.programacion[i]
+            
             j = 0
-            while j < self.sillas_por_fila:
-                if self.sillas[i, j] == True:
-                    sillas_vendidas += 1
+            while j < func_actual.num_filas:
+                c = 0
+                while c < func_actual.sillas_por_fila:
+                    if func_actual.sillas[j, c] == True:
+                        sillas_vendidas += 1
+                    c += 1
                 j += 1
             i += 1
             
-        return sillas_vendidas * precio_boleta
-        
+        return sillas_vendidas * self.valor_boleta
     def calcular_ocupacion(self):
         None
 
