@@ -132,7 +132,7 @@ Hora: {self.hora}
         
 
     def calcular_ocupacion(self):#hace un recorrido por las filas y columnas de las sillas para contar cuales estan acupadas y dar el porcentaje de ocupación
-         sillas_ocupadas = 0
+        sillas_ocupadas = 0
         total_sillas = self.num_filas * self.sillas_por_fila
         
         if total_sillas == 0:
@@ -208,7 +208,7 @@ class Sala:
             funcion.mostrar_mapa()
 
     def calcular_recaudo(self):#hace un recorrido por las filas y columnas de las sillas vendidas y calcula el recaudo de estas
-      sillas_vendidas = 0
+        sillas_vendidas = 0
         
         i = 0
         while i < self.cantidad_funciones:
