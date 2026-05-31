@@ -527,6 +527,53 @@ class AppCine:
             
         input("\nPresione Enter para regresar al menú...")
 
+    def consultar_recaudo_sala(self):
+        print("\n━━━━━━✧ Consultar recaudo de una sala ✧━━━━━━")
+        
+        try:
+            id_sala_buscar = int(input("Identificador de la sala: "))
+            
+            sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
+            if sala_encontrada == None:
+                print(f"No se encontró ninguna sala con ese identificador.")
+                input("\nPresione Enter para continuar...")
+                return
+                
+            total_recaudo = sala_encontrada.calcular_recaudo()
+            
+            print(f"\nResumen de Recaudo - Sala {id_sala_buscar}:")
+            print(f"Total recaudado: ${total_recaudo:,.2f}")
+            
+        except ValueError:
+            print("\nError. El identificador de la sala debe ser un número entero.")
+            
+        input("\nPresione Enter para regresar al menú...")  
+
+    def consultar_recaudo_complejo(self):
+        print("\n━━━━━━✧ Consultar recaudo del complejo ✧━━━━━━")
+        
+        if self.complejo.cantidad_salas == 0:
+            print("No hay salas registradas en el complejo para calcular el recaudo.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+            
+        print(f"\nDESGLOSE DE RECAUDO POR SALA:")
+        print("─" * 45)
+        
+        i = 0
+        while i < self.complejo.cantidad_salas:
+            sala_actual = self.complejo.salas[i]
+            recaudo_sala = sala_actual.calcular_recaudo()
+            print(f"Sala {sala_actual.identificador:<5} | Recaudo: ${recaudo_sala:,.2f}")
+            i += 1
+            
+        total_general = self.complejo.calcular_recaudo()
+        
+        print("─" * 45)
+        print(f"TOTAL GENERAL DEL COMPLEJO: ${total_general:,.2f}")
+            
+        input("\nPresione Enter para regresar al menú...")
+
 
 
         
