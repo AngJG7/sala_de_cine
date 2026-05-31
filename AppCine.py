@@ -551,28 +551,6 @@ class AppCine:
         input("\nPresione Enter para regresar al menú...")  
 
     def consultar_recaudo_complejo(self):
-        print("\n━━━━━━✧ Consultar recaudo de una sala ✧━━━━━━")
-        
-        try:
-            id_sala_buscar = int(input("Identificador de la sala: "))
-            
-            sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
-            if sala_encontrada == None:
-                print(f"No se encontró ninguna sala con ese identificador.")
-                input("\nPresione Enter para continuar...")
-                return
-                
-            total_recaudo = sala_encontrada.calcular_recaudado()
-            
-            print(f"\nResumen de Recaudo - Sala {id_sala_buscar}:")
-            print(f"Total recaudado: ${total_recaudo:,.2f}")
-            
-        except ValueError:
-            print("\nError. El identificador de la sala debe ser un número entero.")
-            
-        input("\nPresione Enter para regresar al menú...")  
-
-    def consultar_recaudo_complejo(self):
         print("\n━━━━━━✧ Consultar recaudo del complejo ✧━━━━━━")
         
         if self.complejo.cantidad_salas == 0:
