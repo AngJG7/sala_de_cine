@@ -21,7 +21,18 @@ class AppCine:
         self.cant_usuarios = 0
         self.cant_peliculas = 0
 
+        if os.path.exists("datos_complejo.npy"):
+            try:
+                arreglo_comp = np.load("datos_complejo.npy", allow_pickle=True)
+                self.complejo = arreglo_comp[0] 
+            except (OSError, IndexError, EOFError):
+                self.complejo = Complejo("","")
+        else:
+            self.complejo = Complejo("","")
+        
+        self.usuarios, self.cant_usuarios = self.cargar_datos("datos_usuarios.npy", MAX_USUARIOS)
 
+        self.peliculas, self.cant_peliculas = self.cargar_datos("datos_peliculas.npy", MAX_PELICULAS)
 
     def principal(self):
         '''
@@ -325,6 +336,7 @@ class AppCine:
             self.usuarios[self.cant_usuarios] = Usuario(nuevo_nomb, nueva_contra, perfil_texto)
             self.cant_usuarios = self.cant_usuarios + 1
             print("Usuario creado exitosamente!!! :)")
+        self.guardar_todo()
 
         self.menu_externo() # volver al menu externo para que el nuevo usuario pueda autenticarse
             
@@ -366,6 +378,7 @@ class AppCine:
             self.peliculas[self.cant_peliculas] = Pelicula(ne, no, anio, dur, gen, pais, cal)
             self.cant_peliculas = self.cant_peliculas + 1
             print("Película creada exitosamente!")
+        self.guardar_todo()
 
     def consultar_detalle_pelicula(self):
         print("\n━━━━━━✧ Consultar detalle de película ✧━━━━━━")
@@ -409,6 +422,7 @@ class AppCine:
                 print("Sala creada exitosamente!")
             else:
                 print("El complejo ya tiene el máximo de salas permitidas (12).")
+        self.guardar_todo()
     
     def reservar_boletas(self):             
         print(f'''
@@ -454,6 +468,7 @@ class AppCine:
 
         boleta = Boleta(fecha, self.complejo.nombre, sala_selecc.identificador, funcion_selecc.get_pelicula().nombre_espanol, funcion_selecc.get_hora(), precio_total, funcion_selecc.get_pelicula().calificacion, sillas_reservadas)
         boleta.mostrar_boleta()
+        self.guardar_todo()
         
     def modificar_estado_pelicula(self):
         print("\n━━━━━━✧ Modificar estado de una película ✧━━━━━━")
@@ -527,6 +542,7 @@ class AppCine:
             print("\nError. Se esperaba un número entero. Volviendo al menú principal sin realizar cambios.")
             
         input("\nPresione Enter para regresar al menú...")
+        self.guardar_todo()
 
     def eliminar_pelicula_programacion(self):
         print("\n━━━━━━✧ Eliminar película de la programación ✧━━━━━━")
@@ -557,6 +573,7 @@ class AppCine:
             print("\nError. El identificador de la sala debe ser un número entero.")
             
         input("\nPresione Enter para regresar al menú...")
+        self.guardar_todo()
 
 
     def consultar_porcentaje_ocupacion(self):
@@ -777,6 +794,38 @@ class AppCine:
                 print("Gracias por usar la app de cines. Hasta luego!")
             case _:
                 print("Opción no válida")
+
+    def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple[np.ndarray, int]:
+        try:
+            if os.path.exists(archivo):
+                arreglo_de_datos = np.load(archivo, allow_pickle=True)
+                tam_arreglo = len(arreglo_de_datos)
+                i = 0
+                while i < tam_arreglo and arreglo_de_datos[i] != None:
+                    i += 1
+                return arreglo_de_datos, i
+            else:
+                return np.full((num_max_datos), fill_value=None, dtype=object), 0
+        except (FileNotFoundError, EOFError, IndexError, OSError):
+            return np.full((num_max_datos), fill_value=None, dtype=object), 0
+
+    def guardar_datos(self, arreglo_de_datos: np.ndarray, archivo: str) -> bool:
+        try:
+            np.save(archivo, arreglo_de_datos, allow_pickle=True)
+            return True
+        except OSError:
+            print(f"Error: No se pudo escribir en el archivo {archivo}.")
+            return False
+
+    def guardar_todo(self) -> None:
+        """ Centraliza el guardado de todos los datos persistentes del sistema """
+        print("\nGuardando datos del sistema...")
+        self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
+        self.guardar_datos(self.peliculas, self.ARCHIVO_PELICULAS)
+        self.guardar_datos(np.array([self.complejo], dtype=object), self.ARCHIVO_COMPLEJO)
+        print("Datos guardados correctamente.")
+
+
 
         
     
