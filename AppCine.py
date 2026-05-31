@@ -351,7 +351,8 @@ class AppCine:
 
         boleta = Boleta(fecha, self.complejo.nombre, sala_selecc.identificador, funcion_selecc.get_pelicula().nombre_espanol, funcion_selecc.get_hora(), precio_total, funcion_selecc.get_pelicula().calificacion, sillas_reservadas)
         boleta.mostrar_boleta()
-     def modificar_estado_pelicula(self):
+        
+    def modificar_estado_pelicula(self):
         print("\n━━━━━━✧ Modificar estado de una película ✧━━━━━━")
         
         if self.cant_peliculas == 0:
