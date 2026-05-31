@@ -12,8 +12,8 @@ from clases import *
 
 class AppCine:
 # Clase principal que maneja todas las demás clases y se encarga del manejo con quien requiera de esas funciones
-# autores: Angela Y Samuel
-# fecha: 29/04
+# autores: Angela, Yulisa y Sebastian
+# fecha: 15/05
     def __init__(self):
         self.complejo = Complejo('','')
         self.usuarios = np.empty(MAX_USUARIOS, dtype=object)
@@ -24,6 +24,13 @@ class AppCine:
 
 
     def principal(self):
+        '''
+        FECHA: 30/05/2026
+        AUTORES: Angela y Yulisa
+        Este método permite la autenticación de los usuarios y su verificación de existencia en el sistema
+        PARAM: No aplica
+        RETURN: Un menú corre
+        '''
         continuar = True 
         while continuar == True:
             autenticado = False
