@@ -1,3 +1,5 @@
+from unittest import case
+import numpy as np
 from clases import *
 
 #REQUERIMIENTOS IMPLEMENTADOS:
@@ -20,28 +22,10 @@ class AppCine:
         self.cant_peliculas = 0
 
 
-        
-        #Datos de ejemplo para iniciar
-
-        self.usuarios[0] = Usuario("admin1", "1234", "administrador")
-        self.usuarios[1] = Usuario("vende1", "1234", "vendedor")
-        self.usuarios[2] = Usuario("cliente1", "1234", "cliente")
-        self.cant_usuarios = 3
- 
-        self.peliculas[0] = Pelicula("El Padrino", "The Godfather", 1972, 175, "drama", "Estados Unidos", "+18")
-        self.peliculas[1] = Pelicula("Intensamente 2", "Inside Out 2", 2024, 96, "infantil", "Estados Unidos", "Todo público")
-        self.cant_peliculas = 2
-
-        self.complejo.agregar_sala(Sala(1, 15000.0, 5, 8))
-
-
 
     def principal(self):
-        
-        continuar = True # para que no se cierre del todo
+        continuar = True 
         while continuar == True:
-                # Metodo princiapl que controla todo el flujo
-                # se hace la autenticacion
             autenticado = False
             usuario_activo = None
 
@@ -53,41 +37,88 @@ class AppCine:
                 nomb_ingresado = input('Usuario: ')
                 contra_ingresada = input('Contraseña: ')
 
-                    # secuencia de busqueda del usuario que se ingrese
+                # secuencia de busqueda del usuario que se ingrese
                 i = 0
                 while i < self.cant_usuarios and autenticado == False:
-                    if self.usuarios[i].nombre_usuario == nomb_ingresado:
-                        if self.usuarios[i].verificar_contrasena(contra_ingresada) == True:
+                    # ══ FILTRO DE SEGURIDAD ══
+                    # Verificamos que la casilla NO sea None antes de evaluar sus atributos
+                    if self.usuarios[i] is not None:
+                        if self.usuarios[i].nombre_usuario == nomb_ingresado:
+                            if self.usuarios[i].verificar_contrasena(contra_ingresada) == True:
                                 autenticado = True
                                 usuario_activo = self.usuarios[i]
                     i += 1
                     
                 if autenticado == False:
-                    print('.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
-                    
-            # Mostrar menú
-
-                print(f'''
+                    print('\n.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
+            
+            # Mostrar menú (Alineado perfectamente con el 'while' de arriba)
+            print(f'''
     ・‥…━━━☆ ¡Bienvenido {usuario_activo.nombre_usuario}!
     (Perfil: {usuario_activo.get_perfil()})''')
-                
-                match (usuario_activo.get_perfil()):
-                    case 'administrador':
-                        self.menu_administrador()
-                    case 'vendedor':
-                        self.menu_vendedor()
-                    case 'cliente':
-                        self.menu_cliente()
-          
-            salir = input("¿Desea salir del sistema? (s/n): ")
-            if salir == "s":
+            
+            match (usuario_activo.get_perfil()):
+                case 'administrador':
+                    self.menu_administrador()
+                case 'vendedor':
+                    self.menu_vendedor()
+                case 'cliente':
+                    self.menu_cliente()
+              
+            salir = input("\n¿Desea cerrar sesión o salir del sistema? (s/n): ")
+            if salir.lower() == "s":
                 continuar = False
 
-## ** quiere decir que todavía no esta la funcion para eso
+    def mostrar_programacion_sala(self):
+        print("\n━━━━━━✧ Consultar programación de una sala ✧━━━━━━")
+        
+        cant_salas = self.complejo.cantidad_salas 
+        
+        if cant_salas == 0:
+            print("El complejo no tiene salas registradas actualmente.")
+            input("\nPresione Enter para regresar...")
+            return
+            
+        print("\nSalas disponibles en el complejo:")
+        print("─" * 45)
+        s = 0
+        while s < cant_salas:
+            sala_disp = self.complejo.salas[s]
+            print(f" • Sala ID: {sala_disp.identificador:<5} | Valor boleta: ${sala_disp.valor_boleta:,.2f}")
+            s += 1
+        print("─" * 45)
+
+        id_sala_buscar = None
+        while id_sala_buscar is None:
+            try:
+                entrada = input("\nIngrese el identificador de la sala que desea consultar: ").strip()
+                if not entrada: # Si está vacío por culpa del buffer anterior, lo ignora y vuelve a pedir
+                    continue
+                id_sala_buscar = int(entrada) 
+            except ValueError:
+                print("\nError. El identificador de la sala debe ser un número entero.")
+                input("\nPresione Enter para intentar de nuevo...")
+                return
+
+        encontrada = False 
+        i = 0 
+        while i < cant_salas and encontrada == False:
+            sala_actual:Sala
+            sala_actual = self.complejo.salas[i] 
+            if sala_actual.identificador == id_sala_buscar: 
+                encontrada = True 
+                # Solo llamamos a mostrar_programacion si encontramos la sala real elegida
+                sala_actual.mostrar_programacion()
+            i += 1
+            
+        if encontrada == False:
+            print(f"\nNo se encontró ninguna sala con el identificador {id_sala_buscar}.")
+        
+        input("\nPresione Enter para continuar...")
 
     def menu_administrador(self):
         opc = 0
-        while opc != 10:         
+        while opc != 11:         
             print(f'''
 ☆゜・。。・゜Menú Administrador ゜・。。・゜★
                       
@@ -100,7 +131,8 @@ class AppCine:
     7) Consultar porcentaje de ocupación
     8) Consultar recaudo de una sala
     9) Consultar recaudo del complejo
-    10) Cerrar sesión
+    10) Consultar programación
+    11) Cerrar sesión
                   ''')
             try:
                 opc = int(input("Seleccione una opción: "))
@@ -124,6 +156,26 @@ class AppCine:
                     case 9:
                         self.consultar_recaudo_complejo()
                     case 10:
+                        print(f'''
+☆゜・。。・゜Programación ゜・。。・゜★
+                      
+    1) Consultar programación completa del complejo
+    2) Consultar programación por película
+    3) Consultar programación  por Sala
+    4) Cerrar sesión
+                  ''')
+                        opc=0
+                        opc2 = int(input("Seleccione una opción: "))
+                        match(opc2):
+                            case 1:
+                                p:Complejo
+                                p=Complejo("","")
+                                p.mostrar_programacion()
+                            case 2:
+                                self.mostrar_programacion_pelicula()
+                            case 3:
+                                self.mostrar_programacion_sala()
+                    case 11:
                         print("Sesión cerrada. Hasta luego!")
                     case _:
                         print("Opción no válida")
@@ -133,14 +185,15 @@ class AppCine:
  
     def menu_vendedor(self):
         opc = 0
-        while opc != 4:
+        while opc != 5:
             print(f'''
 ☆゜・。。・゜Menú Vendedor ゜・。。・゜★
                       
     1) Crear un nuevo usuario
     2) Reservar boletas**
     3) Consultar detalle de una película 
-    4) Cerrar Sesión
+    4) Consultar programación
+    5) Cerrar Sesión
                   ''')
             opc = int(input("Seleccione una opción: "))
  
@@ -152,19 +205,39 @@ class AppCine:
                 case 3:
                     self.consultar_detalle_pelicula()
                 case 4:
+                    print(f'''
+☆゜・。。・゜Programación ゜・。。・゜★
+                      
+    1) Consultar programación completa del complejo
+    2) Consultar programación por película
+    3) Consultar programación  por Sala
+    4) Cerrar sesión
+                  ''')
+                    opc2 = int(input("Seleccione una opción: "))
+                    match(opc2):
+                        case 1:
+                            p:Complejo
+                            p=Complejo("","")
+                            p.mostrar_programacion()
+                        case 2:
+                            self.mostrar_programacion_pelicula()
+                        case 3:
+                           self.mostrar_programacion_sala()
                     print("Sesión cerrada. Hasta luego!")
                 case _:
                     print("Opción no válida")
 
     def menu_cliente(self):
         opc = 0
+        opc2=0
         while opc != 3:
             print(f'''
 ☆゜・。。・゜Menú Cliente ゜・。。・゜★
                       
     1) Reservar boletas**
     2) Consultar detalles de una película
-    3) Cerrar sesión
+    3) Consultar programación 
+    4) Cerrar sesión
                   ''')
             opc = int(input("Seleccione una opción: "))
  
@@ -174,6 +247,27 @@ class AppCine:
                 case 2:
                     self.consultar_detalle_pelicula()
                 case 3:
+                    while opc2 != 3:
+                        print(f'''
+☆゜・。。・゜Programación ゜・。。・゜★
+                      
+    1) Consultar programación completa del complejo
+    2) Consultar programación por película
+    3) Consultar programación  por Sala
+    4) Cerrar sesión
+                  ''')
+                        opc2 = int(input("Seleccione una opción: "))
+                        match(opc2):
+                            case 1:
+                                p:Complejo
+                                p=Complejo("","")
+                                p.mostrar_programacion()
+                            case 2:
+                                self.mostrar_programacion_pelicula()
+                            case 3:
+                                self.mostrar_programacion_sala()
+                                
+                case 4:
                     print("Sesión cerrada. Hasta luego!")
                 case _:
                     print("Opción no válida")
@@ -224,6 +318,8 @@ class AppCine:
             self.usuarios[self.cant_usuarios] = Usuario(nuevo_nomb, nueva_contra, perfil_texto)
             self.cant_usuarios = self.cant_usuarios + 1
             print("Usuario creado exitosamente!!! :)")
+
+        self.menu_externo() # volver al menu externo para que el nuevo usuario pueda autenticarse
             
 
     def crear_pelicula(self):
@@ -551,6 +647,28 @@ class AppCine:
         input("\nPresione Enter para regresar al menú...")  
 
     def consultar_recaudo_complejo(self):
+        print("\n━━━━━━✧ Consultar recaudo de una sala ✧━━━━━━")
+        
+        try:
+            id_sala_buscar = int(input("Identificador de la sala: "))
+            
+            sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
+            if sala_encontrada == None:
+                print(f"No se encontró ninguna sala con ese identificador.")
+                input("\nPresione Enter para continuar...")
+                return
+                
+            total_recaudo = sala_encontrada.calcular_recaudado()
+            
+            print(f"\nResumen de Recaudo - Sala {id_sala_buscar}:")
+            print(f"Total recaudado: ${total_recaudo:,.2f}")
+            
+        except ValueError:
+            print("\nError. El identificador de la sala debe ser un número entero.")
+            
+        input("\nPresione Enter para regresar al menú...")  
+
+    def consultar_recaudo_complejo(self):
         print("\n━━━━━━✧ Consultar recaudo del complejo ✧━━━━━━")
         
         if self.complejo.cantidad_salas == 0:
@@ -574,13 +692,86 @@ class AppCine:
         print(f"TOTAL GENERAL DEL COMPLEJO: ${total_general:,.2f}")
             
         input("\nPresione Enter para regresar al menú...")
+        
+    def mostrar_programacion_pelicula(self):
+        print("\n━━━━━━✧ Consultar horarios de una película ✧━━━━━━")
+        
+        # Validación inicial: verificar si hay películas en el sistema
+        if self.cant_peliculas == 0:
+            print("No hay películas registradas en el sistema actualmente.")
+            input("\nPresione Enter para regresar...")
+            return
+            
+        # Mostrar todas las películas disponibles antes de elegir
+        print("\nPelículas registradas en el sistema:")
+        print("─" * 45)
+        p = 0
+        while p < self.cant_peliculas:
+            # Mostramos el nombre y si está activa o no (por si acaso el profesor lo requiere)
+            estado = "Activa" if self.peliculas[p].get_activa() else "Inactiva"
+            print(f" • {self.peliculas[p].nombre_espanol:<30} ({estado})")
+            p += 1
+        print("─" * 45)
 
+        nombre_buscar = input("\nIngrese el nombre en español de la película que desea buscar: ") 
+        
+        # Validar entrada vacía
+        if nombre_buscar.strip() == "":
+            print("Error: El nombre de la película no puede estar vacío.")
+            input("\nPresione Enter para regresar...")
+            return
 
+        encontrada = False
+        cant_salas = self.complejo.cantidad_salas 
+        
+        i = 0 
+        while i < cant_salas: 
+            sala_actual = self.complejo.salas[i] 
+            
+            j = 0 
+            while j < sala_actual.cantidad_funciones: 
+                funcion = sala_actual.programacion[j] 
+                
+                # Comparamos ignorando mayúsculas/minúsculas para mejorar la experiencia del usuario
+                if funcion.get_pelicula().nombre_espanol.lower() == nombre_buscar.lower(): 
+                    if encontrada == False:
+                        print(f"\n=====================================================")
+                        print(f" Horarios y funciones disponibles para:")
+                        print(f" '{funcion.get_pelicula().nombre_espanol}'")
+                        print(f"=====================================================")
+                        print(f"   {'SALA':<10} | {'HORA'}")
+                        print(f"   {'─'*10}─┼─{'─'*10}")
+                    
+                    # :<10 alinea el identificador de la sala de forma uniforme
+                    print(f"   • Sala {sala_actual.identificador:<5} | {funcion.get_hora()}")
+                    encontrada = True
+                j += 1
+            i += 1
+            
+        if encontrada == False:
+            print(f"\nLa película '{nombre_buscar}' no se encuentra programada en ninguna sala actual.")
 
+        input("\nPresione Enter para continuar...")
+
+    def menu_externo(self) -> None:
+        x:int
+        x=0
+        x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
+        match (x):
+            case 1: 
+                if self.cant_usuarios == 0:
+                    print("\n[SISTEMA]: No hay usuarios en la base de datos.")
+                    self.menu_externo()
+                else:
+                    self.principal()
+            case 2:
+                self.crear_usuario()
+            case 3:
+                print("Gracias por usar la app de cines. Hasta luego!")
+            case _:
+                print("Opción no válida")
 
         
-
-
+    
 app = AppCine()
-app.principal()
-
+app.menu_externo()
