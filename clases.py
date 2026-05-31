@@ -192,7 +192,7 @@ class Sala:
         else:
             funcion.mostrar_mapa()
 
-    def calcular_recaudo(self):
+    def calcular_recaudo(self):#hace un recorrido por las filas y columnas de las sillas vendidas y calcula el recaudo de estas
         sillas_vendidas = 0
         
         i = 0
@@ -206,7 +206,7 @@ class Sala:
             
         return sillas_vendidas * precio_boleta
         
-    def calcular_ocupacion(self):
+    def calcular_ocupacion(self):#hace un recorrido por las filas y columnas de las sillas para contar cuales estan acupadas y dar el porcentaje de ocupación
          sillas_ocupadas = 0
         total_sillas = self.num_filas * self.sillas_por_fila
         
