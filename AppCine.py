@@ -87,7 +87,7 @@ class AppCine:
 
     def menu_administrador(self):
         opc = 0
-        while opc != 6:         
+        while opc != 10:         
             print(f'''
 ☆゜・。。・゜Menú Administrador ゜・。。・゜★
                       
