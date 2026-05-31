@@ -58,7 +58,7 @@ Género:             {self.genero}
 País origen:        {self.pais_origen}
 Calificación:       {self.calificacion}
 Estado:             {estado}''')
-
+        
 class Funcion:
 # representa la proyección de una película a una hora específica en una sala
 # autor: samuel arcila
@@ -259,16 +259,28 @@ class Sala:
             i += 1
         return encontrada
 
-    def mostrar_programacion(self): # IMPRIMIR FUNCIONES DE LA SALA AGREGAR AL DIAGRAMA # se usa dos veces entonces mejor funcion
-        print(f"\nSala {self.identificador} (Valor boleta: ${self.valor_boleta})")
-        if self.cantidad_funciones == 0:
-            print("---Sin funciones programadas")
+    def mostrar_programacion(self): 
+        # Esta función pertenece a la Sala y solo muestra SUS propias funciones
+        print(f"\n=====================================================")
+        print(f" --- Programación para la Sala {self.identificador} ---")
+        print(f"=====================================================")
+        
+        if self.cantidad_funciones == 0: 
+            print(" Sin funciones programadas para esta sala.")
         else:
-            i = 0
-            while i < self.cantidad_funciones:
-                f = self.programacion[i]  # funcion concreta en el arreglo
-                print(f"  - {f.get_pelicula().nombre_espanol} a las {f.get_hora()}")
-                i =+ 1
+            # Encabezado secundario con columnas alineadas
+            print(f"   {'PELÍCULA':<30} | {'HORA'}")
+            print(f"   {'─'*30}─┼─{'─'*10}")
+            
+            j = 0 
+            while j < self.cantidad_funciones: 
+                funcion = self.programacion[j] 
+                nombre_peli = funcion.get_pelicula().nombre_espanol
+                hora_peli = funcion.get_hora()
+                
+                print(f"   • {nombre_peli:<30} | {hora_peli}")
+                j += 1
+
    
 class Complejo:
 # Contiene el arreglo de salas y se refiere al complejo que le pertenece a la empresa
@@ -297,8 +309,42 @@ class Complejo:
             i = i + 1
         return encontrada
     
-    def consultar_programacion(self):
-        None
+    def mostrar_programacion(self):
+        print("\n━━━━━━✧ Cartelera Completa del Complejo ✧━━━━━━")
+        cant_salas = self.cantidad_salas
+        
+        if cant_salas == 0: 
+            print("El complejo no tiene salas registradas.") 
+            input("\nPresione Enter para continuar...")
+            return
+            
+        i = 0 
+        while i < cant_salas: 
+            sala_actual = self.salas[i] 
+            print(f"\n=======================================================")
+            print(f" Sala ID: {sala_actual.identificador:<5} | Valor boleta: ${sala_actual.valor_boleta:,.2f}") 
+            print(f"=======================================================")
+            
+            if sala_actual.cantidad_funciones == 0: 
+                print("   -> Sin funciones programadas para esta sala.") 
+            else:
+                # Encabezado secundario alineado para las funciones
+                print(f"   {'PELÍCULA':<30} | {'HORA'}")
+                print(f"   {'─'*30}─┼─{'─'*10}")
+                
+                j = 0 
+                while j < sala_actual.cantidad_funciones: 
+                    funcion = sala_actual.programacion[j] 
+                    nombre_peli = funcion.get_pelicula().nombre_espanol
+                    hora_peli = funcion.get_hora()
+                    
+                    # :<30 reserva un espacio fijo de 30 caracteres para el nombre
+                    print(f"   [>] {nombre_peli:<30} | {hora_peli}")
+                    j += 1
+            i += 1
+            
+        input("\nPresione Enter para continuar...")
+            
 
     def calcular_recaudado(self):
         total_complejo = 0.0
