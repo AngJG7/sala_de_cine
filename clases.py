@@ -193,9 +193,37 @@ class Sala:
             funcion.mostrar_mapa()
 
     def calcular_recaudo(self):
-        None
+        sillas_vendidas = 0
+        
+        i = 0
+        while i < self.num_filas:
+            j = 0
+            while j < self.sillas_por_fila:
+                if self.sillas[i, j] == True:
+                    sillas_vendidas += 1
+                j += 1
+            i += 1
+            
+        return sillas_vendidas * precio_boleta
+        
     def calcular_ocupacion(self):
-        None
+         sillas_ocupadas = 0
+        total_sillas = self.num_filas * self.sillas_por_fila
+        
+        if total_sillas == 0:
+            return 0.0
+            
+        i = 0
+        while i < self.num_filas:
+            j = 0
+            while j < self.sillas_por_fila:
+                if self.sillas[i, j] == True:
+                    sillas_ocupadas += 1
+                j += 1
+            i += 1
+            
+        return (sillas_ocupadas / total_sillas) * 100.0
+
 
     def buscar_funcion(self, hora_buscar): # BUSQUEDA POR HORA AGREGAR AL DIAGRAMA#  se usa dos veces entonces mejor funcion
         encontrada = None
