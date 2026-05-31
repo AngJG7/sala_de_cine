@@ -216,15 +216,16 @@ class Sala:
             
             j = 0
             while j < func_actual.num_filas:
-                c = 0
-                while c < func_actual.sillas_por_fila:
-                    if func_actual.sillas[j, c] == True:
+                p = 0
+                while p < func_actual.sillas_por_fila:
+                    if func_actual.sillas[j, p] == True:
                         sillas_vendidas += 1
-                    c += 1
+                    p += 1
                 j += 1
             i += 1
             
         return sillas_vendidas * self.valor_boleta
+            
     def calcular_ocupacion(self):
         sillas_vendidas_total = 0
         total_sillas_posibles = self.num_filas * self.sillas_por_fila * self.cantidad_funciones
