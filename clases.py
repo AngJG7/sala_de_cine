@@ -226,7 +226,27 @@ class Sala:
             
         return sillas_vendidas * self.valor_boleta
     def calcular_ocupacion(self):
-        None
+        sillas_vendidas_total = 0
+        total_sillas_posibles = self.num_filas * self.sillas_por_fila * self.cantidad_funciones
+        
+        if total_sillas_posibles == 0:
+            return 0.0
+            
+        i = 0
+        while i < self.cantidad_funciones:
+            func_actual = self.programacion[i]
+            
+            j = 0
+            while j < func_actual.num_filas:
+                p = 0
+                while p < func_actual.sillas_por_fila:
+                    if func_actual.sillas[j, p] == True:
+                        sillas_vendidas_total += 1
+                    p += 1
+                j += 1
+            i += 1
+            
+        return (sillas_vendidas_total / total_sillas_posibles) * 100.0
 
 
     def buscar_funcion(self, hora_buscar): # BUSQUEDA POR HORA AGREGAR AL DIAGRAMA#  se usa dos veces entonces mejor funcion
