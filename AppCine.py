@@ -91,30 +91,45 @@ class AppCine:
             print(f'''
 ☆゜・。。・゜Menú Administrador ゜・。。・゜★
                       
-    1) Crear nueva película
-    2) Modificar estado película **
+   1) Crear nueva película
+    2) Modificar estado película
     3) Crear nueva sala
     4) Consultar detalle de la película
     5) Crear usuarios
-    6) Cerrar sesión
+    6) Eliminar película de la programación
+    7) Consultar porcentaje de ocupación
+    8) Consultar recaudo de una sala
+    9) Consultar recaudo del complejo
+    10) Cerrar sesión
                   ''')
-            opc = int(input("Seleccione una opción: "))
-            match opc:
-                case 1:
-                    self.crear_pelicula()
-                case 2:
-                    self.modificar_estado_pelicula()
-                case 3:
-                    self.crear_sala()
-                case 4:
-                    self.consultar_detalle_pelicula()
-                case 5:
-                    self.crear_usuario()
-                case 6:
-                    print("Sesión cerrada. Hasta luego!")
-                case _:
-                    print("Opción no válida")
-
+            try:
+                opc = int(input("Seleccione una opción: "))
+                match opc:
+                    case 1:
+                        self.crear_pelicula()
+                    case 2:
+                        self.modificar_estado_pelicula()
+                    case 3:
+                        self.crear_sala()
+                    case 4:
+                        self.consultar_detalle_pelicula()
+                    case 5:
+                        self.crear_usuario()
+                    case 6:
+                        self.eliminar_pelicula_programacion()
+                    case 7:
+                        self.consultar_porcentaje_ocupacion()
+                    case 8:
+                        self.consultar_recaudo_sala()
+                    case 9:
+                        self.consultar_recaudo_complejo()
+                    case 10:
+                        print("Sesión cerrada. Hasta luego!")
+                    case _:
+                        print("Opción no válida")
+            except ValueError:
+                print("\nError. Se esperaba un número entero.")
+                input("\nPresione Enter para continuar...")
  
     def menu_vendedor(self):
         opc = 0
@@ -336,7 +351,181 @@ class AppCine:
 
         boleta = Boleta(fecha, self.complejo.nombre, sala_selecc.identificador, funcion_selecc.get_pelicula().nombre_espanol, funcion_selecc.get_hora(), precio_total, funcion_selecc.get_pelicula().calificacion, sillas_reservadas)
         boleta.mostrar_boleta()
+     def modificar_estado_pelicula(self):
+        print("\n━━━━━━✧ Modificar estado de una película ✧━━━━━━")
+        
+        if self.cant_peliculas == 0:
+            print("No hay películas registradas en el sistema.")
+            input("\nPresione Enter para continuar...")
+            return
 
+        nombre_buscar = input("Nombre en español de la película a modificar: ")
+        
+        encontrada = False
+        posi_pelicula = -1
+        i = 0
+        
+        while i < self.cant_peliculas and encontrada == False:
+            if self.peliculas[i].nombre_espanol.lower() == nombre_buscar.lower():
+                encontrada = True
+                posi_pelicula = i
+            i += 1
+            
+        if encontrada == False:
+            print("No se encontró ninguna película con ese nombre.")
+            input("\nPresione Enter para continuar...")
+            return
+
+        pelicula_seleccionada = self.peliculas[posi_pelicula]
+        estado_actual_bool = pelicula_seleccionada.get_activa()
+        estado_actual_texto = "Activa" if estado_actual_bool else "Inactiva"
+        
+        print(f"\nPelícula encontrada: {pelicula_seleccionada.nombre_espanol}")
+        print(f"Estado actual: {estado_actual_texto}")
+        
+        try:
+            print("\nSeleccione el nuevo estado:")
+            print("1 = Activa")
+            print("2 = Inactiva")
+            nuevo_estado = int(input("Opción: "))
+            
+            if nuevo_estado == 1:
+                if estado_actual_bool == True:
+                    print("La película ya se encuentra en estado Activa. No se realizaron cambios.")
+                else:
+                    pelicula_seleccionada.set_activo(True)
+                    print("Película marcada como Activa.")
+                    
+            elif nuevo_estado == 2:
+                if estado_actual_bool == False:
+                    print("La película ya se encuentra en estado Inactiva. No se realizaron cambios.")
+                else:
+                    tiene_funciones = False
+                    j = 0
+                    while j < self.complejo.cantidad_salas and tiene_funciones == False:
+                        sala_actual = self.complejo.salas[j]
+                        f = 0
+                        while f < sala_actual.cantidad_funciones and tiene_funciones == False:
+                            if sala_actual.programacion[f].get_pelicula().nombre_espanol == pelicula_seleccionada.nombre_espanol:
+                                tiene_funciones = True
+                            f += 1
+                        j += 1
+                    
+                    if tiene_funciones == True:
+                        print("Error. No se puede inactivar la película porque actualmente tiene funciones en cartelera")
+                    else:
+                        pelicula_seleccionada.set_activo(False)
+                        print("Película marcada como Inactiva.")
+            else:
+                print("Error, debe seleccionar 1 o 2.")
+                
+        except ValueError:
+            print("\nError. Se esperaba un número entero. Volviendo al menú principal sin realizar cambios.")
+            
+        input("\nPresione Enter para regresar al menú...")
+
+    def eliminar_pelicula_programacion(self):
+        print("\n━━━━━━✧ Eliminar película de la programación ✧━━━━━━")
+        
+        try:
+            id_sala_buscar = int(input("Identificador de la sala: "))
+            
+            sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
+            if sala_encontrada == None:
+                print(f"Error. No se encontró ninguna sala con el ID {id_sala_buscar}")
+                input("\nPresione Enter para continuar...")
+                return
+                
+            hora_buscar = input("Hora de la función a eliminar: ")
+            
+            funcion_encontrada = sala_encontrada.buscar_funcion(hora_buscar)
+            if funcion_encontrada == None:
+                print(f"Error. No se encontró ninguna función a las {hora_buscar} en la Sala {id_sala_buscar}")
+                input("\nPresione Enter para continuar...")
+                return
+                
+            if sala_encontrada.eliminar_funcion(hora_buscar) == True:
+                print("Función eliminada exitosamente.")
+            else:
+                print("Error. No se pudo eliminar la función.")
+                
+        except ValueError:
+            print("\nError. El identificador de la sala debe ser un número entero.")
+            
+        input("\nPresione Enter para regresar al menú...")
+
+
+    def consultar_porcentaje_ocupacion(self):
+        print("\n━━━━━━✧ Porcentaje de Ocupación por Película ✧━━━━━━")
+        
+        max_registros = MAX_SALAS * MAX_FUNCIONES
+        
+        peliculas_ocup = np.empty(max_registros, dtype=object)
+        salas_ocup = np.empty(max_registros, dtype=int)
+        horas_ocup = np.empty(max_registros, dtype=object)
+        porcentajes = np.zeros(max_registros, dtype=float)
+        
+        cant_registros = 0
+        
+        i = 0
+        while i < self.complejo.cantidad_salas:
+            sala_actual = self.complejo.salas[i]
+            
+            j = 0
+            while j < sala_actual.cantidad_funciones:
+                func_actual = sala_actual.programacion[j]
+                
+                peliculas_ocup[cant_registros] = func_actual.get_pelicula().nombre_espanol
+                salas_ocup[cant_registros] = sala_actual.identificador
+                horas_ocup[cant_registros] = func_actual.get_hora()
+                porcentajes[cant_registros] = func_actual.calcular_ocupacion()
+                
+                cant_registros += 1
+                j += 1
+            i += 1
+            
+        if cant_registros == 0:
+            print("No hay funciones programadas en ninguna sala para generar el reporte.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+            
+        i = 0
+        while i < cant_registros - 1:
+            p = i
+            j = i + 1
+            while j < cant_registros:
+                if porcentajes[j] > porcentajes[p]:
+                    p = j
+                j += 1
+                
+            if p != i:
+                aux_porc = porcentajes[i]
+                porcentajes[i] = porcentajes[p]
+                porcentajes[p] = aux_porc
+                
+                aux_peli = peliculas_ocup[i]
+                peliculas_ocup[i] = peliculas_ocup[p]
+                peliculas_ocup[p] = aux_peli
+                
+                aux_sala = salas_ocup[i]
+                salas_ocup[i] = salas_ocup[p]
+                salas_ocup[p] = aux_sala
+                
+                aux_hora = horas_ocup[i]
+                horas_ocup[i] = horas_ocup[p]
+                horas_ocup[p] = aux_hora
+                
+            i += 1
+            
+        print(f"\n{"PELÍCULA":<25} {"SALA":<8} {"HORA":<10} {"OCUPACIÓN"}")
+        print("=" * 55)
+        
+        i = 0
+        while i < cant_registros:
+            print(f"{peliculas_ocup[i]:<25} {salas_ocup[i]:<8} {horas_ocup[i]:<10} {porcentajes[i]:.2f}%")
+            i += 1
+            
+        input("\nPresione Enter para regresar al menú...")
 
 
 
