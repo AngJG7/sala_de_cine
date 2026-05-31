@@ -131,8 +131,23 @@ Hora: {self.hora}
         print('X = OCUPADA, _= LIBRE')
         
 
-    def calcular_ocupacion(self):
-        None
+    def calcular_ocupacion(self):#hace un recorrido por las filas y columnas de las sillas para contar cuales estan acupadas y dar el porcentaje de ocupación
+         sillas_ocupadas = 0
+        total_sillas = self.num_filas * self.sillas_por_fila
+        
+        if total_sillas == 0:
+            return 0.0
+            
+        i = 0
+        while i < self.num_filas:
+            j = 0
+            while j < self.sillas_por_fila:
+                if self.sillas[i, j] == True:
+                    sillas_ocupadas += 1
+                j += 1
+            i += 1
+            
+        return (sillas_ocupadas / total_sillas) * 100.0
 
 class Sala:
 # Se refiere a una sala del complejo, con un identificador único, valor, dimensiones, numero de filas y silla por cada fila.
@@ -206,23 +221,8 @@ class Sala:
             
         return sillas_vendidas * precio_boleta
         
-    def calcular_ocupacion(self):#hace un recorrido por las filas y columnas de las sillas para contar cuales estan acupadas y dar el porcentaje de ocupación
-         sillas_ocupadas = 0
-        total_sillas = self.num_filas * self.sillas_por_fila
-        
-        if total_sillas == 0:
-            return 0.0
-            
-        i = 0
-        while i < self.num_filas:
-            j = 0
-            while j < self.sillas_por_fila:
-                if self.sillas[i, j] == True:
-                    sillas_ocupadas += 1
-                j += 1
-            i += 1
-            
-        return (sillas_ocupadas / total_sillas) * 100.0
+    def calcular_ocupacion(self):
+        None
 
 
     def buscar_funcion(self, hora_buscar): # BUSQUEDA POR HORA AGREGAR AL DIAGRAMA#  se usa dos veces entonces mejor funcion
