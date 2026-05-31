@@ -301,7 +301,13 @@ class Complejo:
         None
 
     def calcular_recaudado(self):
-        None
+        total_complejo = 0.0
+        i = 0
+        while i < self.cantidad_salas:
+            sala_actual = self.salas[i]
+            total_complejo += sala_actual.calcular_recaudo()
+            i += 1
+        return total_complejo
 
 class Boleta: 
     def __init__(self, fecha, comp, sala, peli, hora, pre, cal, sillas):
