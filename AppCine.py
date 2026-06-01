@@ -72,6 +72,7 @@ class AppCine:
                         
                     if autenticado == False:
                         print('\n.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
+                        input("\nPresione Enter para continuar...")
                 
                 # Mostrar menú (Alineado perfectamente con el 'while' de arriba)
                 print(f'''
