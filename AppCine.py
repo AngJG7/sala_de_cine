@@ -929,27 +929,32 @@ class AppCine:
             PARAM: No aplica
             RETURN: No aplica
             '''
-            self.limpiar_pantalla()
-            try:
-                x:int
-                x=0
-                x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
-                match (x):
-                    case 1: 
-                        if self.cant_usuarios == 0:
-                            print("\n[SISTEMA]: No hay usuarios en la base de datos.")
-                            self.menu_externo()
-                        else:
-                            self.principal()
-                    case 2:
-                        self.crear_usuario()
-                    case 3:
-                        print("Gracias por usar la app de cines. Hasta luego!")
-                    case _:
-                        print("Opción no válida")
-            except (EOFError, KeyboardInterrupt):
-                print("\n Se interrumpió la lectura de datos por consola.")
-                input("\nPresione Enter para regresar al menú...")
+            continuar = True
+            while continuar:
+                self.limpiar_pantalla()
+                try:
+                    x = int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
+                    match (x):
+                        case 1:
+                            if self.cant_usuarios == 0:
+                                print("\n[SISTEMA]: No hay usuarios en la base de datos.")
+                                input("\nPresione Enter para continuar...")
+                            else:
+                                self.principal()
+                        case 2:
+                            self.crear_usuario()
+                        case 3:
+                            print("Gracias por usar la app de cines. Hasta luego!")
+                            continuar = False
+                        case _:
+                            print("Opción no válida.")
+                            input("\nPresione Enter para continuar...")
+                except ValueError:
+                    print("Opción no válida.")
+                    input("\nPresione Enter para continuar...")
+                except (EOFError, KeyboardInterrupt):
+                    print("\n Se interrumpió la lectura de datos por consola.")
+                    input("\nPresione Enter para regresar al menú...")
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple[np.ndarray, int]:
         '''
