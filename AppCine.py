@@ -3,13 +3,6 @@ import numpy as np
 from clases import *
 import os
 
-#REQUERIMIENTOS IMPLEMENTADOS:
-#R6- Consultar el detalle de una película
-#R7- Crear un nuevo usuario en el sistema
-#R8- Crear una nueva película
-#R10- Crear una nueva sala de cine
-#R16- Autenticar usuario y mostrar menú según perfil
-
 class AppCine:
 # Clase principal que maneja todas las demás clases y se encarga del manejo con quien requiera de esas funciones
 # autores: Angela, Yulisa y Sebastian
