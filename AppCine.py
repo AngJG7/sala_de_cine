@@ -872,7 +872,7 @@ class AppCine:
             print("─" * 45)
             p = 0
             while p < self.cant_peliculas:
-                # Mostramos el nombre y si está activa o no (por si acaso el profesor lo requiere)
+                # Mostramos el nombre y si está activa o no
                 estado = "Activa" if self.peliculas[p].get_activa() else "Inactiva"
                 print(f" • {self.peliculas[p].nombre_espanol:<30} ({estado})")
                 p += 1
@@ -907,7 +907,7 @@ class AppCine:
                             print(f"   {'SALA':<10} | {'HORA'}")
                             print(f"   {'─'*10}─┼─{'─'*10}")
                         
-                        # :<10 alinea el identificador de la sala de forma uniforme
+                        # alinea el identificador de la sala de forma uniforme
                         print(f"   • Sala {sala_actual.identificador:<5} | {funcion.get_hora()}")
                         encontrada = True
                     j += 1
@@ -983,7 +983,7 @@ class AppCine:
         '''
         try:
             np.save(archivo, arreglo_de_datos, allow_pickle=True)
-            return True
+            return True 
         except OSError:
             print(f"Error: No se pudo escribir en el archivo {archivo}.")
             return False
