@@ -244,17 +244,18 @@ class AppCine:
     4) Consultar programación
     5) Cerrar Sesión
                   ''')
-            opc = int(input("Seleccione una opción: "))
- 
-            match opc:
-                case 1:
-                    self.crear_usuario()
-                case 2:
-                    self.reservar_boletas()
-                case 3:
-                    self.consultar_detalle_pelicula()
-                case 4:
-                    print(f'''
+            try:
+                opc = int(input("Seleccione una opción: "))
+     
+                match opc:
+                    case 1:
+                        self.crear_usuario()
+                    case 2:
+                        self.reservar_boletas()
+                    case 3:
+                        self.consultar_detalle_pelicula()
+                    case 4:
+                        print(f'''
 ☆゜・。。・゜Programación ゜・。。・゜★
                       
     1) Consultar programación completa del complejo
@@ -262,19 +263,22 @@ class AppCine:
     3) Consultar programación  por Sala
     4) Cerrar sesión
                   ''')
-                    opc2 = int(input("Seleccione una opción: "))
-                    match(opc2):
-                        case 1:
-                            p:Complejo
-                            p=Complejo("","")
-                            p.mostrar_programacion()
-                        case 2:
-                            self.mostrar_programacion_pelicula()
-                        case 3:
-                           self.mostrar_programacion_sala()
-                    print("Sesión cerrada. Hasta luego!")
-                case _:
-                    print("Opción no válida")
+                        opc2 = int(input("Seleccione una opción: "))
+                        match(opc2):
+                            case 1:
+                                p:Complejo
+                                p=Complejo("","")
+                                p.mostrar_programacion()
+                            case 2:
+                                self.mostrar_programacion_pelicula()
+                            case 3:
+                               self.mostrar_programacion_sala()
+                        print("Sesión cerrada. Hasta luego!")
+                    case _:
+                        print("Opción no válida")
+            except (EOFError, KeyboardInterrupt):
+                print("\n\n[INFO]: Se interrumpió la lectura de datos por consola.")
+                input("\nPresione Enter para regresar al menú...")
 
     def menu_cliente(self):
         '''
@@ -398,14 +402,17 @@ class AppCine:
         Un mensaje que indique que no se pudo registrar la película
         '''
         print("\n━━━━━━✧ Crear nueva película ✧━━━━━━")
-        valido = True
-        ne = input("Nombre en español: ")
-        no = input("Nombre original: ")
-        anio = int(input("Año de estreno: "))
-        dur = int(input("Duración (min): "))
-        gen = input("Género (drama/suspenso/terror/acción/comedia/infantil): ")
-        pais = input("País de origen: ")
-        cal = input("Calificación: ")
+        try:
+            valido = True
+            ne = input("Nombre en español: ")
+            no = input("Nombre original: ")
+            anio = int(input("Año de estreno: "))
+            dur = int(input("Duración (min): "))
+            gen = input("Género (drama/suspenso/terror/acción/comedia/infantil): ")
+            pais = input("País de origen: ")
+            cal = input("Calificación: ")
+        except ValueError:
+            print("\nERROR. Se esperaba un número entero. Intente de nuevo.")
  
         # validar campos no esten vacios
         if ne == "" or no == "" or pais == "":
@@ -522,10 +529,13 @@ class AppCine:
             return
         
         funcion_selecc.mostrar_mapa()
-
-        cant_boletas = int(input('Ingrese la cantidad de boletas que desea comprar: '))
-        fila = int(input('Escoja la fila: '))
-        silla_inicial = int(input('Escoja la silla inicial: '))
+        
+        try:
+            cant_boletas = int(input('Ingrese la cantidad de boletas que desea comprar: '))
+            fila = int(input('Escoja la fila: '))
+            silla_inicial = int(input('Escoja la silla inicial: '))
+        except: ValueError:
+            print("\nERROR. Se esperaba un número entero. Intente de nuevo.")
 
         # validar la cantidad
         if cant_boletas < 1:
@@ -920,22 +930,23 @@ class AppCine:
             RETURN: No aplica
             '''
             self.limpiar_pantalla()
-            x:int
-            x=0
-            x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
-            match (x):
-                case 1: 
-                    if self.cant_usuarios == 0:
-                        print("\n[SISTEMA]: No hay usuarios en la base de datos.")
-                        self.menu_externo()
-                    else:
-                        self.principal()
-                case 2:
-                    self.crear_usuario()
-                case 3:
-                    print("Gracias por usar la app de cines. Hasta luego!")
-                case _:
-                    print("Opción no válida")
+            try:
+                x:int
+                x=0
+                x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
+                match (x):
+                    case 1: 
+                        if self.cant_usuarios == 0:
+                            print("\n[SISTEMA]: No hay usuarios en la base de datos.")
+                            self.menu_externo()
+                        else:
+                            self.principal()
+                    case 2:
+                        self.crear_usuario()
+                    case 3:
+                        print("Gracias por usar la app de cines. Hasta luego!")
+                    case _:
+                        print("Opción no válida")
             except (EOFError, KeyboardInterrupt):
             print("\n Se interrumpió la lectura de datos por consola.")
             input("\nPresione Enter para regresar al menú...")
