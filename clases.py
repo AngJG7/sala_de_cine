@@ -436,13 +436,13 @@ class Complejo:
         return total_complejo
 
 class Boleta: 
-        '''
-        Esta clase es la que va a  guardar todos los datos de las boletas.
-        AUTOR: Angela Jurado
-        FECHA: 24/04
-        PARAM: No aplica.
-        RETURN: No aplica.
-        '''
+    '''
+    Esta clase es la que va a  guardar todos los datos de las boletas.
+    AUTOR: Angela Jurado
+    FECHA: 24/04
+    PARAM: No aplica.
+    RETURN: No aplica.
+    '''
     def __init__(self, fecha, comp, sala, peli, hora, pre, cal, sillas):
         '''
         Este es el método  constructor de la clase, aquí se inicializan los datos como: fecha, película, sala, hora, precio, calificación, sillas.
