@@ -55,6 +55,7 @@ class AppCine:
             usuario_activo = None
 
             while autenticado == False:
+                self.limpiar_pantalla()
                 print(f'''
     ╭════════════ .✧. ════════════╮
       Bienvenido a la app de cines
@@ -157,6 +158,7 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
+        self.limpiar_pantalla()
         opc = 0
         while opc != 11:         
             print(f'''
@@ -231,6 +233,7 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
+        self.limpiar_pantalla()
         opc = 0
         while opc != 5:
             print(f'''
@@ -282,6 +285,7 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
+        self.limpiar_pantalla()
         opc = 0
         opc2=0
         while opc != 3:
@@ -900,6 +904,7 @@ class AppCine:
     PARAM: No aplica
     RETURN: No aplica
     '''
+        self.limpiar_pantalla()
         x:int
         x=0
         x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
@@ -971,6 +976,15 @@ class AppCine:
         self.guardar_datos(np.array([self.complejo], dtype=object), "datos_complejo.npy")
         
         print("Datos guardados correctamente.")
+    def limpiar_pantalla(self) -> None:
+        """ Limpia la consola de comandos según el sistema operativo """
+        try:
+            if os.name == 'nt':
+                os.system('cls')
+            else:
+                os.system('clear')
+        except OSError:   
+            pass
 
 
         
