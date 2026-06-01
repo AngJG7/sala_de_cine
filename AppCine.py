@@ -571,7 +571,7 @@ class AppCine:
         Un mensaje que indique que no se pudo realizar el cambio de estado.
         '''
         print("\n━━━━━━✧ Modificar estado de una película ✧━━━━━━")
-        
+        #se verifica si hay peliculas registradas
         if self.cant_peliculas == 0:
             print("No hay películas registradas en el sistema.")
             input("\nPresione Enter para continuar...")
@@ -582,7 +582,7 @@ class AppCine:
         encontrada = False
         posi_pelicula = -1
         i = 0
-        
+        #se recorre el arreglo para buscar la pelicula
         while i < self.cant_peliculas and encontrada == False:
             if self.peliculas[i].nombre_espanol.lower() == nombre_buscar.lower():
                 encontrada = True
@@ -593,7 +593,7 @@ class AppCine:
             print("No se encontró ninguna película con ese nombre.")
             input("\nPresione Enter para continuar...")
             return
-
+        #se cambia el estaod en el que este
         pelicula_seleccionada = self.peliculas[posi_pelicula]
         estado_actual_bool = pelicula_seleccionada.get_activa()
         estado_actual_texto = "Activa" if estado_actual_bool else "Inactiva"
@@ -613,7 +613,7 @@ class AppCine:
                 else:
                     pelicula_seleccionada.set_activo(True)
                     print("Película marcada como Activa.")
-                    
+            #se verifica que no se cambie el estado al mismo     
             elif nuevo_estado == 2:
                 if estado_actual_bool == False:
                     print("La película ya se encuentra en estado Inactiva. No se realizaron cambios.")
@@ -657,7 +657,7 @@ class AppCine:
         
         try:
             id_sala_buscar = int(input("Identificador de la sala: "))
-            
+            #se busca la pelicula que se quiere eliminar
             sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
             if sala_encontrada == None:
                 print(f"Error. No se encontró ninguna sala con el ID {id_sala_buscar}")
@@ -671,7 +671,7 @@ class AppCine:
                 print(f"Error. No se encontró ninguna función a las {hora_buscar} en la Sala {id_sala_buscar}")
                 input("\nPresione Enter para continuar...")
                 return
-                
+              #se llama el metodo de otra clase para elimanr la funcion  
             if sala_encontrada.eliminar_funcion(hora_buscar) == True:
                 print("Función eliminada exitosamente.")
             else:
@@ -696,7 +696,7 @@ class AppCine:
         print("\n━━━━━━✧ Porcentaje de Ocupación por Película ✧━━━━━━")
         
         max_registros = MAX_SALAS * MAX_FUNCIONES
-        
+        #se declaran los sigeunte arreglos 
         peliculas_ocup = np.empty(max_registros, dtype=object)
         salas_ocup = np.empty(max_registros, dtype=int)
         horas_ocup = np.empty(max_registros, dtype=object)
@@ -716,7 +716,7 @@ class AppCine:
                 salas_ocup[cant_registros] = sala_actual.identificador
                 horas_ocup[cant_registros] = func_actual.get_hora()
                 porcentajes[cant_registros] = func_actual.calcular_ocupacion()
-                
+                #se llaman a los siguente metodos
                 cant_registros += 1
                 j += 1
             i += 1
@@ -751,7 +751,7 @@ class AppCine:
                 aux_hora = horas_ocup[i]
                 horas_ocup[i] = horas_ocup[p]
                 horas_ocup[p] = aux_hora
-                
+                #se ordenan los arreglos ya que son paralelos
             i += 1
             
         print(f"\n{"PELÍCULA":<25} {"SALA":<8} {"HORA":<10} {"OCUPACIÓN"}")
@@ -777,7 +777,7 @@ class AppCine:
         
         try:
             id_sala_buscar = int(input("Identificador de la sala: "))
-            
+            #se busca la sala
             sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
             if sala_encontrada == None:
                 print(f"No se encontró ninguna sala con ese identificador.")
@@ -785,7 +785,7 @@ class AppCine:
                 return
                 
             total_recaudo = sala_encontrada.calcular_recaudo()
-            
+            #se llama al metodo para calcular el recaudo
             print(f"\nResumen de Recaudo - Sala {id_sala_buscar}:")
             print(f"Total recaudado: ${total_recaudo:,.2f}")
             
@@ -794,27 +794,6 @@ class AppCine:
             
         input("\nPresione Enter para regresar al menú...")  
 
-    def consultar_recaudo_complejo(self):
-        print("\n━━━━━━✧ Consultar recaudo de una sala ✧━━━━━━")
-        
-        try:
-            id_sala_buscar = int(input("Identificador de la sala: "))
-            
-            sala_encontrada = self.complejo.buscar_sala(id_sala_buscar)
-            if sala_encontrada == None:
-                print(f"No se encontró ninguna sala con ese identificador.")
-                input("\nPresione Enter para continuar...")
-                return
-                
-            total_recaudo = sala_encontrada.calcular_recaudado()
-            
-            print(f"\nResumen de Recaudo - Sala {id_sala_buscar}:")
-            print(f"Total recaudado: ${total_recaudo:,.2f}")
-            
-        except ValueError:
-            print("\nError. El identificador de la sala debe ser un número entero.")
-            
-        input("\nPresione Enter para regresar al menú...")  
 
     def consultar_recaudo_complejo(self):
         '''
@@ -831,7 +810,7 @@ class AppCine:
             print("No hay salas registradas en el complejo para calcular el recaudo.")
             input("\nPresione Enter para regresar al menú...")
             return
-            
+            #se verifica que haya salas activas 
         print(f"\nDESGLOSE DE RECAUDO POR SALA:")
         print("─" * 45)
         
@@ -841,7 +820,7 @@ class AppCine:
             recaudo_sala = sala_actual.calcular_recaudo()
             print(f"Sala {sala_actual.identificador:<5} | Recaudo: ${recaudo_sala:,.2f}")
             i += 1
-            
+            #se calcula el recaudo total del complejo llamando el metodo de la clase Complejo
         total_general = self.complejo.calcular_recaudado()
         
         print("─" * 45)
