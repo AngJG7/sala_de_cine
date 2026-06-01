@@ -274,7 +274,13 @@ class Sala:
         return encontrada
 
     def mostrar_programacion(self): 
-        # Esta función pertenece a la Sala y solo muestra SUS propias funciones
+        '''
+        Este método permite que la sala muestre su propia programación.
+        AUTOR: Yulisa Otero
+        FECHA: 30/05
+        PARAM: No aplica.
+        RETURN: No aplica.
+        '''
         print(f"\n=====================================================")
         print(f" --- Programación para la Sala {self.identificador} ---")
         print(f"=====================================================")
@@ -339,11 +345,12 @@ class Complejo:
     
     def mostrar_programacion(self):
         '''
-        Este método permite mostrar la programación registrada  por  cada sal
-        AUTOR: Angela Jurado
-        FECHA: 24/04
-        PARAM: recibe un parámetro llamado "s" que es la sala a agregar
-        RETURN: No aplica.
+        Este método permite mostrar la programación registrada de todas las salas registradas en el sistema.
+        AUTOR: Yulisa Otero
+        FECHA: 30/05
+        PARAM: No aplica.
+        RETURN: Un mensaje  indicando que no hay funciones programadas para la sala en caso de no encontrar.
+        Un mensaje con la programación de todas las salas.
         '''
         print("\n━━━━━━✧ Cartelera Completa del Complejo ✧━━━━━━")
         cant_salas = self.cantidad_salas
@@ -382,6 +389,13 @@ class Complejo:
             
 
     def calcular_recaudado(self):
+        '''
+        Este método permite calcular el recaudo realizado por todas las salas del complejo.
+        AUTOR: Sebastian Murillo
+        FECHA: 30/05
+        PARAM: No aplica.
+        RETURN: Valor del total del recaudo.
+        '''
         total_complejo = 0.0
         i = 0
         while i < self.cantidad_salas:
@@ -391,7 +405,21 @@ class Complejo:
         return total_complejo
 
 class Boleta: 
+        '''
+        Esta clase es la que va a  guardar todos los datos de las boletas.
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: No aplica.
+        RETURN: No aplica.
+        '''
     def __init__(self, fecha, comp, sala, peli, hora, pre, cal, sillas):
+        '''
+        Este es el método  constructor de la clase, aquí se inicializan los datos como: fecha, película, sala, hora, precio, calificación, sillas.
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe 4 parametros referentes a la fecha, película, sala, hora, precio, calificación, sillas.
+        RETURN: No aplica.
+        '''
         self.fecha_venta = fecha
         self.nombre_complejo = comp
         self.identificador_sala = sala
@@ -402,6 +430,14 @@ class Boleta:
         self.sillas_reservadas = sillas
     
     def mostrar_boleta(self):
+        '''
+        Este método se utiliza para mostrar la información almacenada de la boleta comprada.
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: No aplica.
+        RETURN: No aplica.
+        '''
+        
         print(f'''
     ╭══════════ .✧. ══════════╮
                BOLETA
