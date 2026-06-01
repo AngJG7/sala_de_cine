@@ -336,6 +336,7 @@ class AppCine:
             self.usuarios[self.cant_usuarios] = Usuario(nuevo_nomb, nueva_contra, perfil_texto)
             self.cant_usuarios = self.cant_usuarios + 1
             print("Usuario creado exitosamente!!! :)")
+        input("\nPresione Enter para continuar...")
         self.guardar_todo()
 
         self.menu_externo() # volver al menu externo para que el nuevo usuario pueda autenticarse
@@ -378,6 +379,7 @@ class AppCine:
             self.peliculas[self.cant_peliculas] = Pelicula(ne, no, anio, dur, gen, pais, cal)
             self.cant_peliculas = self.cant_peliculas + 1
             print("Película creada exitosamente!")
+        input("\nPresione Enter para continuar...")
         self.guardar_todo()
 
     def consultar_detalle_pelicula(self):
@@ -396,6 +398,7 @@ class AppCine:
  
         if encontrada == False:
             print("No se encontró ninguna película con ese nombre")
+        input("\nPresione Enter para continuar...")
 
     def crear_sala(self):
         print("\n━━━━━━✧ Crear nueva sala ✧━━━━━━")
@@ -422,6 +425,8 @@ class AppCine:
                 print("Sala creada exitosamente!")
             else:
                 print("El complejo ya tiene el máximo de salas permitidas (12).")
+
+        input("\nPresione Enter para continuar...")
         self.guardar_todo()
     
     def reservar_boletas(self):             
@@ -468,6 +473,7 @@ class AppCine:
 
         boleta = Boleta(fecha, self.complejo.nombre, sala_selecc.identificador, funcion_selecc.get_pelicula().nombre_espanol, funcion_selecc.get_hora(), precio_total, funcion_selecc.get_pelicula().calificacion, sillas_reservadas)
         boleta.mostrar_boleta()
+        input("\nPresione Enter para continuar...")
         self.guardar_todo()
         
     def modificar_estado_pelicula(self):
@@ -818,13 +824,16 @@ class AppCine:
             return False
 
     def guardar_todo(self) -> None:
-        """ Centraliza el guardado de todos los datos persistentes del sistema """
+        """ Centraliza el guardado utilizando los strings fijos de los archivos """
         print("\nGuardando datos del sistema...")
-        self.guardar_datos(self.usuarios, self.ARCHIVO_USUARIOS)
-        self.guardar_datos(self.peliculas, self.ARCHIVO_PELICULAS)
-        self.guardar_datos(np.array([self.complejo], dtype=object), self.ARCHIVO_COMPLEJO)
+        
+        self.guardar_datos(self.usuarios, "datos_usuarios.npy")
+        
+        self.guardar_datos(self.peliculas, "datos_peliculas.npy")
+        
+        self.guardar_datos(np.array([self.complejo], dtype=object), "datos_complejo.npy")
+        
         print("Datos guardados correctamente.")
-
 
 
         
