@@ -221,6 +221,8 @@ class AppCine:
                         self.agregar_funcion()
                     case 12:
                         print("Sesión cerrada. Hasta luego!")
+                        self.menu_externo()
+                        return
                     case _:
                         print("Opción no válida")
             except ValueError:
@@ -274,7 +276,10 @@ class AppCine:
                                 self.mostrar_programacion_pelicula()
                             case 3:
                                self.mostrar_programacion_sala()
+                    case 5:
                         print("Sesión cerrada. Hasta luego!")
+                        self.menu_externo()
+                        return
                     case _:
                         print("Opción no válida")
             except (EOFError, KeyboardInterrupt):
@@ -329,6 +334,8 @@ class AppCine:
                                 
                 case 4:
                     print("Sesión cerrada. Hasta luego!")
+                    self.menu_externo()
+                    return
                 case _:
                     print("Opción no válida")
 
