@@ -854,87 +854,91 @@ class AppCine:
         print("\n━━━━━━✧ Consultar horarios de una película ✧━━━━━━")
         
         # Validación inicial: verificar si hay películas en el sistema
-        if self.cant_peliculas == 0:
-            print("No hay películas registradas en el sistema actualmente.")
-            input("\nPresione Enter para regresar...")
-            return
-            
-        # Mostrar todas las películas disponibles antes de elegir
-        print("\nPelículas registradas en el sistema:")
-        print("─" * 45)
-        p = 0
-        while p < self.cant_peliculas:
-            # Mostramos el nombre y si está activa o no (por si acaso el profesor lo requiere)
-            estado = "Activa" if self.peliculas[p].get_activa() else "Inactiva"
-            print(f" • {self.peliculas[p].nombre_espanol:<30} ({estado})")
-            p += 1
-        print("─" * 45)
-
-        nombre_buscar = input("\nIngrese el nombre en español de la película que desea buscar: ") 
-        
-        # Validar entrada vacía
-        if nombre_buscar.strip() == "":
-            print("Error: El nombre de la película no puede estar vacío.")
-            input("\nPresione Enter para regresar...")
-            return
-
-        encontrada = False
-        cant_salas = self.complejo.cantidad_salas 
-        
-        i = 0 
-        while i < cant_salas: 
-            sala_actual = self.complejo.salas[i] 
-            
-            j = 0 
-            while j < sala_actual.cantidad_funciones: 
-                funcion = sala_actual.programacion[j] 
+        try:
+            if self.cant_peliculas == 0:
+                print("No hay películas registradas en el sistema actualmente.")
+                input("\nPresione Enter para regresar...")
+                return
                 
-                # Comparamos ignorando mayúsculas/minúsculas para mejorar la experiencia del usuario
-                if funcion.get_pelicula().nombre_espanol.lower() == nombre_buscar.lower(): 
-                    if encontrada == False:
-                        print(f"\n=====================================================")
-                        print(f" Horarios y funciones disponibles para:")
-                        print(f" '{funcion.get_pelicula().nombre_espanol}'")
-                        print(f"=====================================================")
-                        print(f"   {'SALA':<10} | {'HORA'}")
-                        print(f"   {'─'*10}─┼─{'─'*10}")
-                    
-                    # :<10 alinea el identificador de la sala de forma uniforme
-                    print(f"   • Sala {sala_actual.identificador:<5} | {funcion.get_hora()}")
-                    encontrada = True
-                j += 1
-            i += 1
+            # Mostrar todas las películas disponibles antes de elegir
+            print("\nPelículas registradas en el sistema:")
+            print("─" * 45)
+            p = 0
+            while p < self.cant_peliculas:
+                # Mostramos el nombre y si está activa o no (por si acaso el profesor lo requiere)
+                estado = "Activa" if self.peliculas[p].get_activa() else "Inactiva"
+                print(f" • {self.peliculas[p].nombre_espanol:<30} ({estado})")
+                p += 1
+            print("─" * 45)
+    
+            nombre_buscar = input("\nIngrese el nombre en español de la película que desea buscar: ") 
             
-        if encontrada == False:
-            print(f"\nLa película '{nombre_buscar}' no se encuentra programada en ninguna sala actual.")
-
-        input("\nPresione Enter para continuar...")
-
-    def menu_externo(self) -> None:
-        '''
-        Este es el menú principal y permite que los usuarios se autentiquen en el sistema.
-        AUTORES: Yulisa Otero
-        FECHA: 5/05/2026
-        PARAM: No aplica
-        RETURN: No aplica
-        '''
-        self.limpiar_pantalla()
-        x:int
-        x=0
-        x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
-        match (x):
-            case 1: 
-                if self.cant_usuarios == 0:
-                    print("\n[SISTEMA]: No hay usuarios en la base de datos.")
-                    self.menu_externo()
-                else:
-                    self.principal()
-            case 2:
-                self.crear_usuario()
-            case 3:
-                print("Gracias por usar la app de cines. Hasta luego!")
-            case _:
-                print("Opción no válida")
+            # Validar entrada vacía
+            if nombre_buscar.strip() == "":
+                print("Error: El nombre de la película no puede estar vacío.")
+                input("\nPresione Enter para regresar...")
+                return
+    
+            encontrada = False
+            cant_salas = self.complejo.cantidad_salas 
+            
+            i = 0 
+            while i < cant_salas: 
+                sala_actual = self.complejo.salas[i] 
+                
+                j = 0 
+                while j < sala_actual.cantidad_funciones: 
+                    funcion = sala_actual.programacion[j] 
+                    
+                    # Comparamos ignorando mayúsculas/minúsculas para mejorar la experiencia del usuario
+                    if funcion.get_pelicula().nombre_espanol.lower() == nombre_buscar.lower(): 
+                        if encontrada == False:
+                            print(f"\n=====================================================")
+                            print(f" Horarios y funciones disponibles para:")
+                            print(f" '{funcion.get_pelicula().nombre_espanol}'")
+                            print(f"=====================================================")
+                            print(f"   {'SALA':<10} | {'HORA'}")
+                            print(f"   {'─'*10}─┼─{'─'*10}")
+                        
+                        # :<10 alinea el identificador de la sala de forma uniforme
+                        print(f"   • Sala {sala_actual.identificador:<5} | {funcion.get_hora()}")
+                        encontrada = True
+                    j += 1
+                i += 1
+                
+            if encontrada == False:
+                print(f"\nLa película '{nombre_buscar}' no se encuentra programada en ninguna sala actual.")
+    
+            input("\nPresione Enter para continuar...")
+    
+        def menu_externo(self) -> None:
+            '''
+            Este es el menú principal y permite que los usuarios se autentiquen en el sistema.
+            AUTORES: Yulisa Otero
+            FECHA: 5/05/2026
+            PARAM: No aplica
+            RETURN: No aplica
+            '''
+            self.limpiar_pantalla()
+            x:int
+            x=0
+            x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
+            match (x):
+                case 1: 
+                    if self.cant_usuarios == 0:
+                        print("\n[SISTEMA]: No hay usuarios en la base de datos.")
+                        self.menu_externo()
+                    else:
+                        self.principal()
+                case 2:
+                    self.crear_usuario()
+                case 3:
+                    print("Gracias por usar la app de cines. Hasta luego!")
+                case _:
+                    print("Opción no válida")
+            except (EOFError, KeyboardInterrupt):
+            print("\n Se interrumpió la lectura de datos por consola.")
+            input("\nPresione Enter para regresar al menú...")
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple[np.ndarray, int]:
         '''
