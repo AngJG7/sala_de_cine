@@ -386,8 +386,6 @@ class AppCine:
             print("Usuario creado exitosamente!!! :)")
         input("\nPresione Enter para continuar...")
         self.guardar_todo()
-
-        self.menu_externo() # volver al menu externo para que el nuevo usuario pueda autenticarse
             
 
     def crear_pelicula(self):
