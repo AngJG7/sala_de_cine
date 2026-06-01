@@ -348,8 +348,13 @@ class AppCine:
  
         nuevo_nomb = input("Nombre de usuario: ")
         nueva_contra = input("Contraseña: ")
-        nuevo_perfil = int(input("Perfil (1=cliente, 2=vendedor, 3=administrador): "))
- 
+        try:
+            nuevo_perfil = int(input("Perfil (1=cliente, 2=vendedor, 3=administrador): "))
+        except ValueError:
+            print("Error: el perfil debe ser un número (1, 2 o 3).")
+            input("\nPresione Enter para continuar...")
+            return
+
         #Validar que los campos no esten vacios
         if nuevo_nomb == "" or nueva_contra == "":
             valido = False
