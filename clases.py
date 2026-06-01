@@ -155,6 +155,13 @@ class Sala:
 # fecha: 25/04
 
     def __init__(self, id, val, filas, sillas):
+        '''
+        Este es el método  constructor de la clase, aquí se inicializan los datos como: id, valor de la boleta, sala, sillas y filas.
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe 4 parametros referentes a la id, valor de la boleta, filas y sillas.
+        RETURN: No aplica.
+        '''
         self.identificador = id
         self.valor_boleta = val
         self.num_filas = filas
@@ -164,6 +171,14 @@ class Sala:
         self.cantidad_funciones = 0
     
     def agregar_funcion(self, f) -> bool:
+        '''
+        Este método permite  agregar funciones a las películas
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: No aplica.
+        RETURN True si  se pudo agregar la función.
+        False si no se pudo agregar la función.
+        '''
         # verificar cupo
         if self.cantidad_funciones >= MAX_FUNCIONES:
             return False
@@ -179,6 +194,14 @@ class Sala:
         return True
     
     def eliminar_funcion(self, hora_buscar):
+        '''
+        Este es el método que permite eliminar funciones de la programación de las películas.
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe 1 parámetro que es el de la hora  que se desea eliminar.
+        RETURN: False si no se encuentra el parámetro a eliminar.
+        True si es encontrado y se pudo eliminar la función.
+        '''
         # buscar la posición de la función a eliminar
         pos_funcion = -1
         i = 0
@@ -201,6 +224,14 @@ class Sala:
         return True
     
     def mostrar_mapa(self, hora_buscar):  # muestra el mapa de sillas de la función que está a la hora indicada
+        '''
+        Muestra el mapa de sillas de la función que está a la hora indicada
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe 1 parámetro que es la hora a la que se va a buscar la función ara mostrar el mapa.
+        RETURN: El mapa de la función si esta es encontrada.
+        Un mensaje indicando que no se pudo encontrar la función.
+        '''
         funcion = self.buscar_funcion(hora_buscar)
         if funcion is None:
             print("No se encontró ninguna función a esa hora en esa sala!")
@@ -208,13 +239,13 @@ class Sala:
             funcion.mostrar_mapa()
 
     def calcular_recaudo(self):#hace un recorrido por las filas y columnas de las sillas vendidas y calcula el recaudo de estas
-    '''
-    Este método calcula el recaudo obtenido por la sala.
-    AUTOR: Sebastian Murillo
-    FECHA: 30/05
-    PARAM: No aplica
-    RETURN: valor recaudado por la sala.
-    '''
+        '''
+        Este método calcula el recaudo obtenido por la sala.
+        AUTOR: Sebastian Murillo
+        FECHA: 30/05
+        PARAM: No aplica
+        RETURN: valor recaudado por la sala.
+        '''
         sillas_vendidas = 0
         
         i = 0
