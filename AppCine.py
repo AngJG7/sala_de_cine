@@ -15,6 +15,12 @@ class AppCine:
 # autores: Angela, Yulisa y Sebastian
 # fecha: 15/05
     def __init__(self):
+        '''
+        Este es el método constructor de la clase
+        AUTORES: Angela y Sebastian
+        PARAM: No aplica
+        Return: No aplica
+        '''
         self.complejo = Complejo('','')
         self.usuarios = np.empty(MAX_USUARIOS, dtype=object)
         self.peliculas = np.empty(MAX_PELICULAS, dtype=object)
@@ -40,7 +46,8 @@ class AppCine:
         AUTORES: Angela y Yulisa
         Este método permite la autenticación de los usuarios y su verificación de existencia en el sistema
         PARAM: No aplica
-        RETURN: Un menú corre
+        RETURN: Un menú correspondiente al perfil del usuario registrado en caso de poder hacerse el registro
+        Un mensaje que indique que no se pudo realizar el registtro
         '''
         continuar = True 
         while continuar == True:
@@ -88,6 +95,14 @@ class AppCine:
                 continuar = False
 
     def mostrar_programacion_sala(self):
+        '''
+        Este método permite mostrar todas las programaciones que tiene una sala
+        FECHA: 29/05/2026
+        AUTORES: Yulisa Otero
+        PARAM: No aplica
+        RETURN: La programación completa de la sala esperada en caso de encontrarla
+        Un mensaje que indique que no se encontró la sala
+        '''
         print("\n━━━━━━✧ Consultar programación de una sala ✧━━━━━━")
         
         cant_salas = self.complejo.cantidad_salas 
@@ -110,7 +125,7 @@ class AppCine:
         while id_sala_buscar is None:
             try:
                 entrada = input("\nIngrese el identificador de la sala que desea consultar: ").strip()
-                if not entrada: # Si está vacío por culpa del buffer anterior, lo ignora y vuelve a pedir
+                if not entrada: # Si está vacío, lo ignora y vuelve a pedir
                     continue
                 id_sala_buscar = int(entrada) 
             except ValueError:
@@ -135,6 +150,13 @@ class AppCine:
         input("\nPresione Enter para continuar...")
 
     def menu_administrador(self):
+        '''
+        Este método es el que permite  acceder al perfil de administrador a todas sus funciones por medio de un menú
+        AUTORES: Angela y Yulisa
+        FECHA: 30/05/2026
+        PARAM: No aplica
+        RETURN: No aplica
+        '''
         opc = 0
         while opc != 11:         
             print(f'''
@@ -202,6 +224,13 @@ class AppCine:
                 input("\nPresione Enter para continuar...")
  
     def menu_vendedor(self):
+        '''
+        Este método es el que permite  acceder al perfil de vendedor a todas sus funciones por medio de un menú
+        AUTORES: Angela y Yulisa
+        FECHA: 30/05/2026
+        PARAM: No aplica
+        RETURN: No aplica
+        '''
         opc = 0
         while opc != 5:
             print(f'''
@@ -246,6 +275,13 @@ class AppCine:
                     print("Opción no válida")
 
     def menu_cliente(self):
+        '''
+        Este método es el que permite  acceder al perfil de cliente a todas sus funciones por medio de un menú
+        AUTORES: Angela y Yulisa
+        FECHA: 30/05/2026
+        PARAM: No aplica
+        RETURN: No aplica
+        '''
         opc = 0
         opc2=0
         while opc != 3:
@@ -291,7 +327,14 @@ class AppCine:
                     print("Opción no válida")
 
     def crear_usuario(self):
-
+    '''
+    Este método permite el registro de usuarios de cualquiera de los 3 perfiles en el sistema
+    AUTORES: Angela
+    FECHA: 5/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indicando que se registró el usuario de manera exitosa
+    Un mensaje que indique que no se pudo registrar el usuario
+    '''
         print("\n━━━━━━✧ Crear nuevo usuario ✧━━━━━━")
         valido = True
         ya_existe = False
@@ -343,6 +386,14 @@ class AppCine:
             
 
     def crear_pelicula(self):
+    '''
+    Este método permite el registro de películas en el sistema
+    AUTORES: Angela
+    FECHA: 5/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que se registró exitosamente en el sistema en caso de hacerlo.
+    Un mensaje que indique que no se pudo registrar la película
+    '''
         print("\n━━━━━━✧ Crear nueva película ✧━━━━━━")
         valido = True
         ne = input("Nombre en español: ")
@@ -429,7 +480,15 @@ class AppCine:
         input("\nPresione Enter para continuar...")
         self.guardar_todo()
     
-    def reservar_boletas(self):             
+    def reservar_boletas(self):
+    '''
+    Este método permite la reservación de boletas disponibles en el sistema
+    AUTORES: Angela
+    FECHA: 5/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que se realizó la reserva de manera exitosa
+    Un mensaje que indique que no se pudo realizar la reserva
+    '''
         print(f'''
 ━━━━━━✧  Reservar boletas ✧━━━━━━''')
         id_sala_buscar = int(input('Ingresa el identificador de la sala:')) # Buscar por id
@@ -477,6 +536,15 @@ class AppCine:
         self.guardar_todo()
         
     def modificar_estado_pelicula(self):
+    '''
+    Este método le permite al administrador editar el estado en el que se encuentra una película indicando si hay funciones habilitadas o no 
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que no hay peliculas en caso de no encontrar ninguna registrada.
+    Un mensaje que indique que el cambio de estado fue exitoso  en caso de hacerlo.
+    Un mensaje que indique que no se pudo realizar el cambio de estado.
+    '''
         print("\n━━━━━━✧ Modificar estado de una película ✧━━━━━━")
         
         if self.cant_peliculas == 0:
@@ -551,6 +619,15 @@ class AppCine:
         self.guardar_todo()
 
     def eliminar_pelicula_programacion(self):
+         '''
+    Este método permite la eliminación de películas de la programación del complejo
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que que no se encontró la película si no está dentro de la programación.
+    Un mensaje que indique que la película se eliminó correctamente.
+    Un mensaje que indique que no se pudo eliminar la película.
+    '''
         print("\n━━━━━━✧ Eliminar película de la programación ✧━━━━━━")
         
         try:
@@ -583,6 +660,14 @@ class AppCine:
 
 
     def consultar_porcentaje_ocupacion(self):
+    '''
+    Este método le permite al administrador ver qué tan ocupada está una sala en una función definida
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que no hay funciones disponibles para generar el reporte.
+    Un mensaje que indique con los reportes del porcentaje de ocupación de la sala.
+    '''
         print("\n━━━━━━✧ Porcentaje de Ocupación por Película ✧━━━━━━")
         
         max_registros = MAX_SALAS * MAX_FUNCIONES
@@ -655,6 +740,14 @@ class AppCine:
         input("\nPresione Enter para regresar al menú...")
 
     def consultar_recaudo_sala(self):
+    '''
+    Este método permite calcular el porcentaje  recaudado por sala
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que no se encontró la sala buscada.
+    Un mensaje con el total recaudado si la sala sí se encontró.
+    '''
         print("\n━━━━━━✧ Consultar recaudo de una sala ✧━━━━━━")
         
         try:
@@ -699,6 +792,14 @@ class AppCine:
         input("\nPresione Enter para regresar al menú...")  
 
     def consultar_recaudo_complejo(self):
+    '''
+    Este método permite consultar el recaudo total de todas las salas del complejo
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que no hay salas registradas y por  ende no se puede calcular el recaudo
+    Un mensaje que indique la suma del recaudo de todas las salas del complejo
+    '''
         print("\n━━━━━━✧ Consultar recaudo del complejo ✧━━━━━━")
         
         if self.complejo.cantidad_salas == 0:
@@ -724,6 +825,14 @@ class AppCine:
         input("\nPresione Enter para regresar al menú...")
         
     def mostrar_programacion_pelicula(self):
+    '''
+    Este método permite mostrar todas las programaciones que tiene una película
+    AUTORES: Yulisa Otero
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: Un mensaje que indique que no hay películas registradas en el sistema
+    La programación de la película en caso de encontrarla en el sistema
+    '''
         print("\n━━━━━━✧ Consultar horarios de una película ✧━━━━━━")
         
         # Validación inicial: verificar si hay películas en el sistema
@@ -784,6 +893,13 @@ class AppCine:
         input("\nPresione Enter para continuar...")
 
     def menu_externo(self) -> None:
+    '''
+    Este es el menú principal y permite que los usuarios se autentiquen en el sistema.
+    AUTORES: Yulisa Otero
+    FECHA: 5/05/2026
+    PARAM: No aplica
+    RETURN: No aplica
+    '''
         x:int
         x=0
         x=int(input("\n━━━━━━✧ Autentica tu usuario ✧━━━━━━ \n\n1. Iniciar Sesión \n\n2. Registrarse \n\n3. Salir \n"))
@@ -802,6 +918,13 @@ class AppCine:
                 print("Opción no válida")
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple[np.ndarray, int]:
+    '''
+    Este método permite la creación de los archivos para que el programa no inicie desde cero cada vez que se ejecute.
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: No aplica
+    '''
         try:
             if os.path.exists(archivo):
                 arreglo_de_datos = np.load(archivo, allow_pickle=True)
@@ -816,6 +939,13 @@ class AppCine:
             return np.full((num_max_datos), fill_value=None, dtype=object), 0
 
     def guardar_datos(self, arreglo_de_datos: np.ndarray, archivo: str) -> bool:
+    '''
+    Este método guarda los datos de los archivos ya creados para que el programa no inicie desde cero cada vez que se ejecute.
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: No aplica
+    '''
         try:
             np.save(archivo, arreglo_de_datos, allow_pickle=True)
             return True
@@ -824,6 +954,13 @@ class AppCine:
             return False
 
     def guardar_todo(self) -> None:
+    '''
+    Este método guarda los datos de todos los archivos ya creados para que el programa no inicie desde cero cada vez que se ejecute.
+    AUTORES: Sebastian Murillo
+    FECHA: 30/05/2026
+    PARAM: No aplica
+    RETURN: No aplica
+    '''
         """ Centraliza el guardado utilizando los strings fijos de los archivos """
         print("\nGuardando datos del sistema...")
         
