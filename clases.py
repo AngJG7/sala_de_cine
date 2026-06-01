@@ -208,6 +208,13 @@ class Sala:
             funcion.mostrar_mapa()
 
     def calcular_recaudo(self):#hace un recorrido por las filas y columnas de las sillas vendidas y calcula el recaudo de estas
+    '''
+    Este método calcula el recaudo obtenido por la sala.
+    AUTOR: Sebastian Murillo
+    FECHA: 30/05
+    PARAM: No aplica
+    RETURN: valor recaudado por la sala.
+    '''
         sillas_vendidas = 0
         
         i = 0
@@ -227,6 +234,13 @@ class Sala:
         return sillas_vendidas * self.valor_boleta
             
     def calcular_ocupacion(self):
+        '''
+        Representa una película del catálogo con todos sus datos. Una película puede estar activa (puede ser programada) o inactiva (no programable)
+        AUTOR: Sebastian Murillo.
+        FECHA: 30/05
+        PARAM: No aplica.
+        RETURN: Porcentaje ocupado de la sala.
+        '''
         sillas_vendidas_total = 0
         total_sillas_posibles = self.num_filas * self.sillas_por_fila * self.cantidad_funciones
         
@@ -293,6 +307,13 @@ class Complejo:
         self.cantidad_salas = 0
  
     def agregar_sala(self, s):
+        '''
+        Este método permite agregar salas al complejo
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe un parámetro llamado "s" que es la sala a agregar
+        RETURN: No aplica.
+        '''
         if self.cantidad_salas >= MAX_SALAS:
             return False
  
@@ -301,6 +322,13 @@ class Complejo:
         return True
     
     def buscar_sala(self, id_sala):
+        '''
+        Este método permite buscar salas registradas en el complejo
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe un parámetro llamado "id_sala" para inicializar la busqueda
+        RETURN: Un valor booleano.
+        '''
         encontrada = None
         i = 0
         while i < self.cantidad_salas and encontrada is None: # busqueda secuencial por id
@@ -310,6 +338,13 @@ class Complejo:
         return encontrada
     
     def mostrar_programacion(self):
+        '''
+        Este método permite mostrar la programación registrada  por  cada sal
+        AUTOR: Angela Jurado
+        FECHA: 24/04
+        PARAM: recibe un parámetro llamado "s" que es la sala a agregar
+        RETURN: No aplica.
+        '''
         print("\n━━━━━━✧ Cartelera Completa del Complejo ✧━━━━━━")
         cant_salas = self.cantidad_salas
         
