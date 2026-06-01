@@ -448,7 +448,7 @@ class Boleta:
         Este es el método  constructor de la clase, aquí se inicializan los datos como: fecha, película, sala, hora, precio, calificación, sillas.
         AUTOR: Angela Jurado
         FECHA: 24/04
-        PARAM: recibe 4 parametros referentes a la fecha, película, sala, hora, precio, calificación, sillas.
+        PARAM: recibe 8 parametros referentes a la fecha, película, sala, hora, precio, calificación, sillas.
         RETURN: No aplica.
         '''
         self.fecha_venta = fecha
