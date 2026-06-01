@@ -637,7 +637,7 @@ class AppCine:
         self.guardar_todo()
 
     def eliminar_pelicula_programacion(self):
-         '''
+        '''
         Este método permite la eliminación de películas de la programación del complejo
         AUTORES: Sebastian Murillo
         FECHA: 30/05/2026
