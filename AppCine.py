@@ -544,7 +544,7 @@ class AppCine:
             cant_boletas = int(input('Ingrese la cantidad de boletas que desea comprar: '))
             fila = int(input('Escoja la fila: '))
             silla_inicial = int(input('Escoja la silla inicial: '))
-        except: ValueError:
+        except ValueError:
             print("\nERROR. Se esperaba un número entero. Intente de nuevo.")
 
         # validar la cantidad
@@ -928,10 +928,14 @@ class AppCine:
                 
             if encontrada == False:
                 print(f"\nLa película '{nombre_buscar}' no se encuentra programada en ninguna sala actual.")
-    
+
             input("\nPresione Enter para continuar...")
-    
-        def menu_externo(self) -> None:
+
+        except Exception as e:
+            print(f"\nError inesperado: {e}")
+            input("\nPresione Enter para continuar...")
+
+    def menu_externo(self) -> None:
             '''
             Este es el menú principal y permite que los usuarios se autentiquen en el sistema.
             AUTORES: Yulisa Otero
@@ -958,8 +962,8 @@ class AppCine:
                     case _:
                         print("Opción no válida")
             except (EOFError, KeyboardInterrupt):
-            print("\n Se interrumpió la lectura de datos por consola.")
-            input("\nPresione Enter para regresar al menú...")
+                print("\n Se interrumpió la lectura de datos por consola.")
+                input("\nPresione Enter para regresar al menú...")
 
     def cargar_datos(self, archivo: str, num_max_datos: int) -> tuple[np.ndarray, int]:
         '''

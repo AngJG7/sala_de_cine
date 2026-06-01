@@ -104,7 +104,7 @@ class Funcion:
     def mostrar_mapa(self):
         print(f'''
 ━━━━━━✧ Mapa de Sillas ✧━━━━━━
-Pelicula: {self.pelicula}
+Pelicula: {self.pelicula.nombre_espanol}
 Hora: {self.hora}
 
       ━━━━━━ PANTALLA ━━━━━━
