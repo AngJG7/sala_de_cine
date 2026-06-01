@@ -3,6 +3,13 @@ import numpy as np
 from clases import *
 import os
 
+#REQUERIMIENTOS IMPLEMENTADOS:
+#R6- Consultar el detalle de una película
+#R7- Crear un nuevo usuario en el sistema
+#R8- Crear una nueva película
+#R10- Crear una nueva sala de cine
+#R16- Autenticar usuario y mostrar menú según perfil
+
 class AppCine:
 # Clase principal que maneja todas las demás clases y se encarga del manejo con quien requiera de esas funciones
 # autores: Angela, Yulisa y Sebastian
@@ -159,10 +166,10 @@ class AppCine:
         '''
         self.limpiar_pantalla()
         opc = 0
-        while opc != 11:         
+        while opc != 12:
             print(f'''
 ☆゜・。。・゜Menú Administrador ゜・。。・゜★
-                      
+
     1) Crear nueva película
     2) Modificar estado película
     3) Crear nueva sala
@@ -173,7 +180,8 @@ class AppCine:
     8) Consultar recaudo de una sala
     9) Consultar recaudo del complejo
     10) Consultar programación
-    11) Cerrar sesión
+    11) Agregar funcion
+    12) Cerrar sesión
                   ''')
             try:
                 opc = int(input("Seleccione una opción: "))
@@ -217,6 +225,8 @@ class AppCine:
                             case 3:
                                 self.mostrar_programacion_sala()
                     case 11:
+                        self.agregar_funcion()
+                    case 12:
                         print("Sesión cerrada. Hasta luego!")
                     case _:
                         print("Opción no válida")
@@ -239,7 +249,7 @@ class AppCine:
 ☆゜・。。・゜Menú Vendedor ゜・。。・゜★
                       
     1) Crear un nuevo usuario
-    2) Reservar boletas**
+    2) Reservar boletas
     3) Consultar detalle de una película 
     4) Consultar programación
     5) Cerrar Sesión
@@ -295,7 +305,7 @@ class AppCine:
             print(f'''
 ☆゜・。。・゜Menú Cliente ゜・。。・゜★
                       
-    1) Reservar boletas**
+    1) Reservar boletas
     2) Consultar detalles de una película
     3) Consultar programación 
     4) Cerrar sesión
@@ -1022,6 +1032,61 @@ class AppCine:
         except OSError:   
             pass
 
+    def agregar_funcion(self):
+        print("\n━━━━━━✧ Agregar función a programación ✧━━━━━━")
+
+        # verificar validez del input
+        try:
+            id_sala_buscar = int(input("Identificador de la sala: "))
+        except ValueError:
+            print("\nError. El identificador de la sala debe ser un número entero.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+
+        sala_seleccionada = self.complejo.buscar_sala(id_sala_buscar)
+        if sala_seleccionada is None:
+            print("No se encontró ninguna sala con ese identificador.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+
+        # verificar que la sala no tenga ya 5 funciones
+        if sala_seleccionada.cantidad_funciones >= MAX_FUNCIONES:
+            print("La sala ya tiene el máximo de funciones programadas (5).")
+            input("\nPresione Enter para regresar al menú...")
+            return
+
+        # buscar la película
+        nombre_buscar = input("Nombre en español de la película: ")
+        pelicula_seleccionada = None
+        i = 0
+        while i < self.cant_peliculas and pelicula_seleccionada is None:
+            if self.peliculas[i].nombre_espanol == nombre_buscar:
+                pelicula_seleccionada = self.peliculas[i]
+            i = i + 1
+
+        if pelicula_seleccionada is None:
+            print("No se encontró ninguna película con ese nombre.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+        if pelicula_seleccionada.get_activa() == False:
+            print("La película está inactiva, no se puede programar.")
+            input("\nPresione Enter para regresar al menú...")
+            return
+
+        hora = input("Hora de la función (00:00): ")
+
+        # crear la función con las dimensiones de la sala y agregarla
+        nueva_funcion = Funcion(pelicula_seleccionada, hora,
+                                sala_seleccionada.num_filas,
+                                sala_seleccionada.sillas_por_fila)
+        exito = sala_seleccionada.agregar_funcion(nueva_funcion)
+        if exito == True:
+            print("Función agregada exitosamente!")
+            self.guardar_todo()
+        else:
+            print("Error: ya existe una función a esa hora en la sala.")
+
+        input("\nPresione Enter para regresar al menú...")
 
         
     
