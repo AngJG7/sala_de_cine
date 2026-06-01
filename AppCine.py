@@ -456,7 +456,7 @@ class AppCine:
         # buscar peli
         i = 0
         while i < self.cant_peliculas and encontrada == False:
-            if self.peliculas[i].nombre_espanol == nombre_buscar:
+            if self.peliculas[i].nombre_espanol.lower() == nombre_buscar.lower():
                 encontrada = True
                 print("")
                 self.peliculas[i].mostrar_detalles()
@@ -1031,7 +1031,7 @@ class AppCine:
         pelicula_seleccionada = None
         i = 0
         while i < self.cant_peliculas and pelicula_seleccionada is None:
-            if self.peliculas[i].nombre_espanol == nombre_buscar:
+            if self.peliculas[i].nombre_espanol.lower() == nombre_buscar.lower():
                 pelicula_seleccionada = self.peliculas[i]
             i = i + 1
 
