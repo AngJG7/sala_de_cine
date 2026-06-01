@@ -73,6 +73,7 @@ class AppCine:
                     if autenticado == False:
                         print('\n.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
                         input("\nPresione Enter para continuar...")
+                        self.menu_externo()
                 
                 # Mostrar menú (Alineado perfectamente con el 'while' de arriba)
                 print(f'''
@@ -158,9 +159,9 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
-        self.limpiar_pantalla()
         opc = 0
         while opc != 12:
+            self.limpiar_pantalla()
             print(f'''
 ☆゜・。。・゜Menú Administrador ゜・。。・゜★
 
@@ -234,9 +235,9 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
-        self.limpiar_pantalla()
         opc = 0
         while opc != 5:
+            self.limpiar_pantalla()
             print(f'''
 ☆゜・。。・゜Menú Vendedor ゜・。。・゜★
                       
@@ -288,10 +289,10 @@ class AppCine:
         PARAM: No aplica
         RETURN: No aplica
         '''
-        self.limpiar_pantalla()
         opc = 0
         opc2=0
         while opc != 3:
+            self.limpiar_pantalla()
             print(f'''
 ☆゜・。。・゜Menú Cliente ゜・。。・゜★
                       
