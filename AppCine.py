@@ -49,50 +49,56 @@ class AppCine:
         RETURN: Un menú correspondiente al perfil del usuario registrado en caso de poder hacerse el registro
         Un mensaje que indique que no se pudo realizar el registtro
         '''
-        continuar = True 
-        while continuar == True:
-            autenticado = False
-            usuario_activo = None
-
-            while autenticado == False:
-                self.limpiar_pantalla()
+        try:
+            continuar = True 
+            
+            while continuar == True:
+                autenticado = False
+                usuario_activo = None
+    
+                while autenticado == False:
+                    self.limpiar_pantalla()
+                    print(f'''
+        ╭════════════ .✧. ════════════╮
+          Bienvenido a la app de cines
+        ╰════════════ .✧. ════════════╯''')
+                    nomb_ingresado = input('Usuario: ')
+                    contra_ingresada = input('Contraseña: ')
+    
+                    # secuencia de busqueda del usuario que se ingrese
+                    i = 0
+                    while i < self.cant_usuarios and autenticado == False:
+                        # ══ FILTRO DE SEGURIDAD ══
+                        # Verificamos que la casilla NO sea None antes de evaluar sus atributos
+                        if self.usuarios[i] is not None:
+                            if self.usuarios[i].nombre_usuario == nomb_ingresado:
+                                if self.usuarios[i].verificar_contrasena(contra_ingresada) == True:
+                                    autenticado = True
+                                    usuario_activo = self.usuarios[i]
+                        i += 1
+                        
+                    if autenticado == False:
+                        print('\n.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
+                
+                # Mostrar menú (Alineado perfectamente con el 'while' de arriba)
                 print(f'''
-    ╭════════════ .✧. ════════════╮
-      Bienvenido a la app de cines
-    ╰════════════ .✧. ════════════╯''')
-                nomb_ingresado = input('Usuario: ')
-                contra_ingresada = input('Contraseña: ')
-
-                # secuencia de busqueda del usuario que se ingrese
-                i = 0
-                while i < self.cant_usuarios and autenticado == False:
-                    # ══ FILTRO DE SEGURIDAD ══
-                    # Verificamos que la casilla NO sea None antes de evaluar sus atributos
-                    if self.usuarios[i] is not None:
-                        if self.usuarios[i].nombre_usuario == nomb_ingresado:
-                            if self.usuarios[i].verificar_contrasena(contra_ingresada) == True:
-                                autenticado = True
-                                usuario_activo = self.usuarios[i]
-                    i += 1
-                    
-                if autenticado == False:
-                    print('\n.✧. Usuario o contraseña incorrectos. Intente de nuevo! ')
-            
-            # Mostrar menú (Alineado perfectamente con el 'while' de arriba)
-            print(f'''
-    ・‥…━━━☆ ¡Bienvenido {usuario_activo.nombre_usuario}!
-    (Perfil: {usuario_activo.get_perfil()})''')
-            
-            match (usuario_activo.get_perfil()):
-                case 'administrador':
-                    self.menu_administrador()
-                case 'vendedor':
-                    self.menu_vendedor()
-                case 'cliente':
-                    self.menu_cliente()
-              
-            salir = input("\n¿Desea cerrar sesión o salir del sistema? (s/n): ")
-            if salir.lower() == "s":
+        ・‥…━━━☆ ¡Bienvenido {usuario_activo.nombre_usuario}!
+        (Perfil: {usuario_activo.get_perfil()})''')
+                
+                match (usuario_activo.get_perfil()):
+                    case 'administrador':
+                        self.menu_administrador()
+                    case 'vendedor':
+                        self.menu_vendedor()
+                    case 'cliente':
+                        self.menu_cliente()
+                  
+                salir = input("\n¿Desea cerrar sesión o salir del sistema? (s/n): ")
+                if salir.lower() == "s":
+                    continuar = False
+        except ValueError:
+                print("\nERROR. Entrada de datos inválida. Se esperaba un formato diferente.")
+                input("\nPresione Enter para continuar...")
                 continuar = False
 
     def mostrar_programacion_sala(self):
