@@ -210,9 +210,7 @@ class AppCine:
                         opc2 = int(input("Seleccione una opción: "))
                         match(opc2):
                             case 1:
-                                p:Complejo
-                                p=Complejo("","")
-                                p.mostrar_programacion()
+                                self.complejo.mostrar_programacion()
                             case 2:
                                 self.mostrar_programacion_pelicula()
                             case 3:
@@ -269,9 +267,7 @@ class AppCine:
                         opc2 = int(input("Seleccione una opción: "))
                         match(opc2):
                             case 1:
-                                p:Complejo
-                                p=Complejo("","")
-                                p.mostrar_programacion()
+                                self.complejo.mostrar_programacion()
                             case 2:
                                 self.mostrar_programacion_pelicula()
                             case 3:
@@ -323,9 +319,7 @@ class AppCine:
                         opc2 = int(input("Seleccione una opción: "))
                         match(opc2):
                             case 1:
-                                p:Complejo
-                                p=Complejo("","")
-                                p.mostrar_programacion()
+                                self.complejo.mostrar_programacion()
                             case 2:
                                 self.mostrar_programacion_pelicula()
                             case 3:
