@@ -282,6 +282,9 @@ class AppCine:
                         return
                     case _:
                         print("Opción no válida")
+            except ValueError:
+                print("Opción no válida.")
+                input("\nPresione Enter para continuar...")
             except (EOFError, KeyboardInterrupt):
                 print("\n\n[INFO]: Se interrumpió la lectura de datos por consola.")
                 input("\nPresione Enter para regresar al menú...")
@@ -296,18 +299,23 @@ class AppCine:
         '''
         opc = 0
         opc2=0
-        while opc != 3:
+        while opc != 4:
             self.limpiar_pantalla()
             print(f'''
 ☆゜・。。・゜Menú Cliente ゜・。。・゜★
-                      
+
     1) Reservar boletas
     2) Consultar detalles de una película
-    3) Consultar programación 
+    3) Consultar programación
     4) Cerrar sesión
                   ''')
-            opc = int(input("Seleccione una opción: "))
- 
+            try:
+                opc = int(input("Seleccione una opción: "))
+            except ValueError:
+                print("Opción no válida.")
+                input("\nPresione Enter para continuar...")
+                continue
+
             match opc:
                 case 1:
                     self.reservar_boletas()
